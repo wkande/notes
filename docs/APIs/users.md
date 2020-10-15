@@ -1,0 +1,142 @@
+## What are Users?
+
+In **Notes** a user is synonymous with an email address. Nothing more is known about the user. Users must authenticate with their email address using the [Email-Code-Token](APIs/overview.md) mechanism.
+
+<!------------------------------------->
+## Create a Code
+
+Collect the user's email address and sents it to the **POST /code** endpoint. A six digit code will be sent to the user's email account.  The code should then be sent to GET /token to receive a JWT token to use with other endpoints.
+
+Most email gateways will accept an email address and enter it into a queue to be delivered in the future. This does not guarantee delivery. This endpoint will return a status=201 once the gateway "accepts" the email address for delivery, though it might fail in the future.
+
+---
+
+<span class="method get">POST</span> /user/code
+
+---
+
+**Parameters**
+
+| Name         | Type    | In     | Description |
+| :---         | :---    | :---   | :--- |
+| Content-Type | strint  | header | ^ application/x-www-form-urlencoded |
+| Accept       | string  | header | application/json or application/xml |
+| email        | string  | body   | ^ user's email address |
+
+> ^ required, Accept defaults application/json
+
+---
+
+**Usage**
+
+<!-- tabs:start -->
+
+#### **CURL**
+
+```bash
+curl -d "email=me@domain.com" \
+-H "Content-Type: application/x-www-form-urlencoded" \
+-H "Accept:application/json" \
+-X POST http://localhost:3001/user/code | json_pp
+```
+
+#### **Javascript**
+
+```javascript
+const axios = require('axios');
+const options = {
+  "headers": {"Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"}
+};
+
+const resp = await axios.post("/user/code", {"email":"me@domain.com"}, options)
+console.log(resp.data);
+```
+<!-- tabs:end -->
+
+---
+
+**Response**
+
+<!-- tabs:start -->
+#### **Status**
+
+```text
+- 200 OK
+- 400 Bad Request
+- 429 To Many Requests
+- 431 Request Header Fields Too Large
+- 500 Internal server error
+```
+
+#### **JSON**
+
+```json
+{
+  "user": {
+    "email": "warren@wyosoft.com",
+    "code": "A code was sent to the email address."
+  }
+}
+```
+
+#### **XML**
+
+```xml
+<?xml version='1.0'?>
+<user>
+  <email>warren@wyosoft.com</email>
+  <code>A code was sent to the email address.</code>
+</user>
+```
+
+<!-- tabs:end -->
+
+<!------------------------------------->
+## Get a Token
+
+Send the code received from [POST /user/code](APIs/users.md#CreateACode) to **GET /user/token**. The JWT token returned by GET /token is used to access otehr endpoints.
+
+<span class="method get">POST</span> /code
+
+---
+
+**Parameters**
+
+| Name         | Type    | In     | Description |
+| :---         | :---    | :---   | :--- |
+| Accept       | string  | header | application/json or application/xml |
+| email        | string  | query  | ^ user's email address |
+| code         | string  | query  | ^ code sent to the user's email address |
+
+> ^ required, Accept defaults application/json
+
+---
+
+**Usage**
+
+<!-- tabs:start -->
+
+#### **CURL**
+
+```bash
+curl -X GET "http://localhost:3001/user/token?email=me@domain.com&code=123456" | json_pp
+```
+
+#### **Javascript**
+
+```javascript
+const axios = require('axios');
+const options = {
+  "headers": {"Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"}
+};
+
+const resp = await axios.post("/user/code", {"email":"me@domain.com"}, options)
+console.log(resp.data);
+```
+
+<!-- tabs:end -->
+
+---
+
+<!------------------------------------->
+## Get current User

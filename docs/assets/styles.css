@@ -1,0 +1,53 @@
+:root {
+  --docsifytabs-border-color: #ededed;
+  --docsifytabs-tab-highlight-color: green;
+  --docsifytabs-content-padding       : .0rem;
+
+  /* Reduce the font size */
+  /*--base-font-size: 16px;
+  --theme-color:mediumvioletred;*/
+  /* Change the theme color hue */
+  /*--theme-hue: 325;
+
+  --link-color:mediumvioletred;*/
+
+  
+}
+.sidebar-title{
+  font-size:x-large;
+  color:gray;
+  font-style:italic;
+  font-weight: bold;
+}
+.nav-arrow-right{
+  float:right;
+  margin-right:100px;
+  margin-top:-26px;
+}
+.nav-arrow-left{
+  float:left;
+  margin-right:8px;
+  margin-top:-4px;
+}
+.method{
+  color:white;
+  padding:0px 7px 0px 7px;
+  border-radius:4px;
+  display: inline-block;
+  width: 70px;
+  text-align:center;
+  margin-right:7px;
+  opacity: 0.6;
+}
+.get{
+  background-color:blue;
+}
+.put{
+  background-color:orange;
+}
+.post{
+  background-color:green;
+}
+.delete{
+  background-color:red;
+}
