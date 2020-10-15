@@ -4,9 +4,6 @@ Welcome to **Notes**, a demonstration project created by Warren Anderson to impl
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ftnVllssoI8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-
-## Overview
-
 **Notes** is a functional (but not used) project utilizing a Node.js backend for the purpose of illustrating the use of [Docsify](https://docsify.js.org) and [GitBook](https://www.gitbook.com) to create API Reference Guides. Each has a different approach to documentation creation but are tightly integrated with developer tools.
 
 **Docsify** generates documentation on the fly. It smartly loads and parses Markdown files and displays them as a website. Needless-to-say, this guide is a Docsify website. The **API Reference Guide** for Notes is a set of markdown files rendered by Docisfy and some of its many plugins. This guide is hosted by the GitHub Pages site attached to the [Notes GitHub Repo](https://github.com/wkande/notes).
@@ -32,10 +29,33 @@ Change the **email=me@domain.com** to your email address. A code will be sent to
 ```bash
 curl -d "email=me@domain.com" \
 -H "Content-Type: application/x-www-form-urlencoded" \
--X POST https://notes-docsify.herokuapp.com/user/code | json_pp
+-X POST https://docs-as-code.herokuapp.com/user/code | json_pp
 ```
 
-[filename](GettingStarted/insomnia.md ':include')
+## Insomnia
+
+You can execute all the APIs using [Insomnia](https://insomnia.rest) by downloading, unzipping and importing the <a id="raw-url" href="../GettingStarted/Insomnia.json.zip">Notes API Definitions</a> file into Insomnia. Everything is set up and ready to go.  While the APIs can return either JSON or XML, all Insomnia requests are setup to return JSON.
+
+![insomnia](/assets/insomnia.png)
+
+##### Try Authenticating
+
+Be sure you are using the **prod** environment.
+
+1. Select the **Create a Code** endpoint > enter your **Email Address** > select the **Send** button.
+
+1. Get the code from your email.
+
+1. Select the **Get a Token** endpoint > enter your **Code** > select the **Send** button.
+
+1. A **JWT Token** has now been added to the Insomnia ENV and you can now make other API calls.
+
+##### Get your Notes
+
+When you authenticated for the first time a welcome note was created for you.
+
+1. Select the **Get user Notes** endpoint > select the **Send** button.
+
 
 ## MIT License
 

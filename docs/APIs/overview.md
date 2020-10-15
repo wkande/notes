@@ -21,7 +21,7 @@ Your request can ask for data returned as **JSON or XML**. By default the APIs w
 ```bash
 curl -d "email=me@domain.com" \
 -H "Content-Type: application/x-www-form-urlencoded" \
--X POST http://localhost:3001/user/code
+-X POST https://docs-as-code.herokuapp.com/user/code
 ```
 
 #### **XML**
@@ -30,7 +30,7 @@ curl -d "email=me@domain.com" \
 curl -d "email=me@domain.com" \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Accept:application/xml" \
--X POST http://localhost:3001/user/code 
+-X POST https://docs-as-code.herokuapp.com/user/code 
 ```
 
 <!-- tabs:end -->
