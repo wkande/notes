@@ -5,10 +5,11 @@ const debug = require('debug')('notes:users');
 var jwt = require('jsonwebtoken');
 const { token } = require('morgan');
 var nodemailer = require('nodemailer');
-const notes  = require('../libs/models').notes;
+//const notes  = require('../libs/models').notes;
 const Note  = require('../libs/models').Note;
 const tokens = require("../libs/tokens");
-const storeNotes  = require('../libs/models').storeNotes;
+const storeNote  = require('../libs/models').storeNote;
+const getNotes  = require('../libs/models').getNotes;
 
 
 // XML conversion
@@ -28,7 +29,7 @@ router.get('/', function(req, res, next) {
     debug(email);
 
     let cnt = 0;
-    notes.forEach( (element)=>{
+    getNotes().forEach( (element)=>{
       debug('el', element);
       if(element.email === email){
         cnt++;
@@ -145,21 +146,20 @@ router.get('/token', function(req, res, next) {
       token = tokens.getToken(req.query.email)
     }
     else{
-      res.status(401);
+      res.status(400);
       throw {message:"Invalid email format."};
     }
 
     // Ready to send the token. Add a note about it.
-    notes.push(new Note(email, 'Sent received a new token on '+new Date(), ['token']));
-    storeNotes();
+    storeNote(new Note(email, 'Sent a new token.', 'token'));
 
     if (req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
-      res.send(200, js2xmlparser.parse("token",token));
+      res.status(200).send(js2xmlparser.parse("token",token));
     }
     else{
       res.type('application/json');
-      res.send(200, {token,token});
+      res.status(200).send({token,token});
     }
   }
   catch(err){

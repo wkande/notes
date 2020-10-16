@@ -1,28 +1,31 @@
 /*jshint esversion: 6 */
 
 const shortid = require('shortid');
-var fs = require('fs');
+const redis = require('redis');
 const debug = require('debug')('notes:models');
+var notes = [];
 
 
 // STARTUP
     debug('Running startup script');
-    // Load the notes.text file into note if the file exists
-    var notes = [];
-    try{
-      var notes = fs.readFileSync('notes.text').toString().split("\n");
-      // The last row is the notes is a blank line so remove
-      notes.splice(notes.length-1, 1);
-      for(let i=0;i<notes.length;i++){
-        notes[i] = JSON.parse(notes[i]);
-      }
-    }
-    catch(err){
-      debug(err)
-      notes = [];
-    }
-    debug('Notes array length:', notes.length);
-    debug('Loaded');
+    // Connect to RedisLabs
+    const client = redis.createClient(
+      process.env.REDIS_PORT,
+      process.env.REDIS_HOST
+    );
+    client.auth('xjl1MH8AgbS7qPGVkDEfRmpaogdnM8RN');
+
+    client.get("notes", function(err, obj) {
+      // arr is null when the key is missing
+      console.log('err', err);
+      console.log(obj);
+      notes = JSON.parse(obj);
+      console.log(notes[0].email);
+      debug('Notes array length:', notes.length);
+      debug('Loaded');
+    });
+
+    
 // END STARTUP
 
 
@@ -31,24 +34,37 @@ class Note {
     this.id = shortid.generate();
     this.email = email;
     this.text = text;
-    this.tags = tags
+    this.tags = tags;
+    this.ddtm = new Date();
     
   }
 }
 
+
+// EXPORTS
 module.exports.Note = Note;
-module.exports.notes = notes;
 
+module.exports.storeNote = function(note){
+  try{
+    console.log('----- UPDATE REDIS -----')
+    notes.push(note)
+    console.log(notes.length)
+    client.set("notes", JSON.stringify(notes), function(err) {
+      console.error(err);
+    });
+  }
+  catch(err){
+    console.log(err);
+  }
+}
 
-module.exports.storeNotes = function(){
-  var file = fs.createWriteStream('notes.text');
-  file.on('error', function(err) { 
-    console.error(err); 
-  });
+module.exports.getNotes = function(){
+  return notes;
+}
 
-  notes.forEach(value => file.write(`${JSON.stringify(value)}\r\n`));
-
-  file.end();
+module.exports.closeRedis = function(){
+  console.log('Closing connection to RedisLabs');
+  client.quit();
 }
 
 

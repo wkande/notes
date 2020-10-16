@@ -14,6 +14,7 @@ const js2xmlparser = require("js2xmlparser");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var notesRouter = require('./routes/notes');
+const closeRedis  = require('./libs/models').closeRedis;
 const debug = require('debug')('notes:app');
 var app = express();
 
@@ -30,10 +31,28 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/user', usersRouter);
 app.use('/notes', notesRouter);
+app.use('/note', notesRouter);
 
 console.log('NODE_ENV ->', process.env.NODE_ENV);
 console.log('EMAIL_PSWD ->', process.env.EMAIL_PSWD);
 console.log('JWT_SECRET ->', process.env.JWT_SECRET);
+
+
+/*------------------- Ending Node.js --------------------*/
+function exitHandler(options, exitCode) {
+  closeRedis();
+  if (options.cleanup) console.log('clean');
+  if (exitCode || exitCode === 0) console.log(exitCode);
+  if (options.exit) process.exit();
+}
+
+// do something when app is closing
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+
+// catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+/*--------------------------------------------------------*/
+
 
 /**
  * Global Error Handler
@@ -62,7 +81,8 @@ app.use(function(err, req, res, next) {
         console.log('HAS STACK TRACE');
         let e = {message:null, location:null};
         e.message = err.stack.split("\n")[0].trim();
-        e.location = err.stack.split("\n")[1].trim();
+        // Get the first two lines
+        e.location = err.stack.split("\n")[1].trim()+'---'+err.stack.split("\n")[2].trim();
         e.ip = ip;
 
         if(req.get("accept").toLowerCase() === 'application/xml'){
