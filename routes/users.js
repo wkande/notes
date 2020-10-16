@@ -3,7 +3,12 @@ var router = express.Router();
 const js2xmlparser = require("js2xmlparser");
 const debug = require('debug')('notes:users');
 var jwt = require('jsonwebtoken');
+const { token } = require('morgan');
 var nodemailer = require('nodemailer');
+const notes  = require('../libs/models').notes;
+const Note  = require('../libs/models').Note;
+const tokens = require("../libs/tokens");
+const storeNotes  = require('../libs/models').storeNotes;
 
 
 // XML conversion
@@ -13,36 +18,71 @@ let users = [{id:1, email:'warren@wyosoft.com'}, {id:2, email:'gayle@wyosoft.com
 let codes = [];
 
 /**
- * Gets a list of users. This endpoint will only respond to users that are Admins.
+ * GET /user
+ * Gets the current user's email and summary information as a User Object
  */
 router.get('/', function(req, res, next) {
-  if (req.get("accept").toLowerCase() === 'application/json'){
-    res.type('application/json');
-    res.send(200, users);
+  try{
+    // JWY verify return the email
+    const email = tokens.validateToken(req.get('Authorization'), res);
+    debug(email);
+
+    let cnt = 0;
+    notes.forEach( (element)=>{
+      debug('el', element);
+      if(element.email === email){
+        cnt++;
+      }
+    });
+
+    if(req.get("accept").toLowerCase() === 'application/xml'){
+      res.type('application/xml');
+      res.send(200, js2xmlparser.parse("user",{email:email, notes_cnt:cnt}));
+    }
+    else{
+      res.type('application/json');
+      res.send(200, {user:{email:email, notes_cnt:cnt}});
+    }
   }
-  else if (req.get("accept").toLowerCase() === 'application/xml'){
-    res.type('application/xml');
-    res.send(200, js2xmlparser.parse("users",{user:users}));
-  }
-  else{
-    throw new Error('Did not understand the request header for "accept".');
+  catch(err){
+    debug(err);
+    throw(err);
   }
 });
 
 
-/**
+/** 
+ * POST /user/code
+ * 
  * Creates a login code and emails it to a user's email address. This is part of the 
  * Email-Code-Token mechanism. The email/code must then be passed to GET/token to 
  * get a JWT token which is required to call other endpoints.
+ * 
+ * @todo Change sendMail to receive a promise and embed the response in the callback.
  */
-router.post('/code', async function(req, res, next) {
+router.post('/code', function(req, res, next) {
   try{
-    // Email and Code
-    let code = generateCode();
+
+    // Add the request ip to the logs and to the response
+    var ip = req.headers['x-forwarded-for'] || 
+     req.connection.remoteAddress || 
+     req.socket.remoteAddress ||
+     (req.connection.socket ? req.connection.socket.remoteAddress : null);
+    console.log('Email/IP', req.body.email, ip); // Do not remove this line
+
+    // Check content-type
+    if(req.get('content-type') !== 'application/x-www-form-urlencoded'){
+      res.status(400);
+      throw {mesasge:'The header Content-Type must be set to application/x-www-form-urlencoded.'};
+    }
+
+    // Check email and set Code
+    let code = Math.floor(Math.random() * 90000) + 100000;
     let email = req.body.email;
+    debug(email);
     if(!emailIsValid(email)){
-      res.status(401);
-      throw "Invalid email format."
+      res.status(400);
+      throw {message:"Invalid email format."};
     }
 
     // Delete the email if it exists in the codes array
@@ -52,22 +92,17 @@ router.post('/code', async function(req, res, next) {
         }
     });
 
-    debug('EMAIL/CODE', email, code);
-    const user = {email:email, code:'A code was sent to the email address.'};
-
+ 
+    const user = {email:email, temp_code:code, code:'A code was sent to the email address.', ip:ip};
     codes.push({email:email, code:code});
-    debug(codes);
+    debug('codes array', codes);
 
     // Send email
-    let result = await sendEmail(email, code);
-    
+    //let result = sendEmail(email, code);
+    //debug(result);
 
     // Send response
-    if(req.get('content-type') !== 'application/x-www-form-urlencoded'){
-      res.status(400);
-      throw new Error('The header "content-type" must be set to "application/x-www-form-urlencoded".');
-    }
-    else if (req.get("accept").toLowerCase() === 'application/xml'){
+    if (req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
       res.status(201).send(js2xmlparser.parse("user",user));
     }
@@ -77,9 +112,7 @@ router.post('/code', async function(req, res, next) {
     }
   }
   catch(err){
-    console.error(err)
-    console.error('--------------------------------')
-    res.type(500);
+    debug(err);
     throw err;
   }
 });
@@ -90,52 +123,53 @@ router.post('/code', async function(req, res, next) {
  * A JWT token which is required to call other endpoints.
  */
 router.get('/token', function(req, res, next) {
-  const email = req.query.email;
-  const code = req.query.code;
-  
-  // Valid the code
-  let codeIsValid = false;
-  codes.forEach(element => {
-    debug('-->', element.email, email, element.code, code);
-    if(element.code == code && element.email == email){ // Numbers may be strings
-      codeIsValid = true;
+  try{
+    const email = req.query.email;
+    const code = req.query.code;
+    
+    // Valid the code
+    let codeIsValid = false;
+    codes.forEach(element => {
+      debug('-->', element.email, email, element.code, code);
+      if(element.code == code && element.email == email){ // Numbers may be strings
+        codeIsValid = true;
+      }
+    });
+    if(!codeIsValid){
+      res.status(401);
+      throw {message:"Invalid code"};
     }
-  });
-  debug(codeIsValid)
-  if(!codeIsValid){
-    res.status(401);
-    throw "Invalid code";
-  }
 
-  let token = null;
-  if(emailIsValid(email)){
-    token = generateJwtToken(req.query.email); 
-  }
-  else{
-    res.status(401);
-    throw "Invalid email format."
-  }
+    let token = null;
+    if(emailIsValid(email)){
+      token = tokens.getToken(req.query.email)
+    }
+    else{
+      res.status(401);
+      throw {message:"Invalid email format."};
+    }
 
-  if (req.get("accept").toLowerCase() === 'application/xml'){
-    res.type('application/xml');
-    res.send(200, js2xmlparser.parse("token",token));
+    // Ready to send the token. Add a note about it.
+    notes.push(new Note(email, 'Sent received a new token on '+new Date(), ['token']));
+    storeNotes();
+
+    if (req.get("accept").toLowerCase() === 'application/xml'){
+      res.type('application/xml');
+      res.send(200, js2xmlparser.parse("token",token));
+    }
+    else{
+      res.type('application/json');
+      res.send(200, {token,token});
+    }
   }
-  else{
-    res.type('application/json');
-    res.send(200, {token,token});
+  catch(err){
+    debug(err);
+    throw err;
   }
 });
 
 
 module.exports = router;
-
-
-/**
- * Generates a random six digit code.
- */
-function generateCode() {
-  return Math.floor(Math.random() * 90000) + 100000;
-}
 
 
 /**
@@ -148,15 +182,13 @@ function emailIsValid (email) {
 
 
 /**
- * Creates a token with persons array of ids only.
+ * Send an email with nodemailer
+ * 
+ * @param {*} email 
+ * @param {*} code 
+ * 
+ * @todo Need to notify logs if the email fails
  */
-function generateJwtToken(email){
-  debug(process.env.JWT_SECRET)
-  let userTokenInfo = {email};
-  return jwt.sign(userTokenInfo, process.env.JWT_SECRET);
-};
-
-
 async function sendEmail(email, code){
   try{
     let transporter = nodemailer.createTransport({
@@ -185,6 +217,7 @@ async function sendEmail(email, code){
     console.log(result);
   }
   catch(err){
-    throw err;
+    console.error('----- EMAIL SEND ERROR -----');
+    console.error(err);
   }
 }

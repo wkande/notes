@@ -8,17 +8,19 @@ The APIs implement an **Email-Code-Token** mechanism for authentication using [j
 
 The **Token** must be used to authenticate all other endpoints.
 
-Try the **Email-Code-Token** mechanism using Insomnia. See the [Insomnia](./GettingStarted/main.md#insomnia) section of this guide for more information.
+Try the **Email-Code-Token** mechanism using Insomnia. See the [Insomnia](GettingStarted/main.md#insomnia) section of this guide for more information.
 
 ## Accept Header
 
-Your request can ask for data returned as **JSON or XML**. By default the APIs will return JSON.
+Your request can ask for data returned as **JSON or XML**. The APIs will return JSON by default if the Accept header is not sent.
 
 <!-- tabs:start -->
 
 #### **JSON**
 
 ```bash
+# Here no Accept header is sent.
+# The server will send application/json by default.
 curl -d "email=me@domain.com" \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -X POST https://docs-as-code.herokuapp.com/user/code

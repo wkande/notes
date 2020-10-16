@@ -1,6 +1,8 @@
 # Secrets
 .env
-.secrets
+secrets.md
+notes.txt
+
 
 # Logs
 logs

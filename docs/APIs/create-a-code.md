@@ -18,7 +18,7 @@ Most email gateways will accept an email address and enter it into a queue to be
 | Accept       | string  | header | application/json or application/xml |
 | email        | string  | body   | ^ user's email address |
 
-> ^ required, Accept defaults application/json
+^ required
 
 ---
 
