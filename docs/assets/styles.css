@@ -45,9 +45,18 @@
 .put{
   background-color:orange;
 }
+.patch{
+  background-color:#00CED1;
+}
 .post{
   background-color:green;
 }
 .delete{
   background-color:red;
+}
+.head{
+  background-color:purple;
+}
+.options{
+  background-color:gold;
 }

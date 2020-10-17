@@ -1,6 +1,6 @@
 ## About
 
-Welcome to **Notes**, a demonstration project created by Warren Anderson to implement [Docsify](https://docsify.js.org) and  using the **docs-as-code** philosophy, sometimes referred to as docs-like-code. Other products like [GitBook](https://www.gitbook.com) and [MkDocs](https://www.mkdocs.org) are also a great choice.
+Welcome to **Notes**, a demonstration project created by Warren Anderson to implement [Docsify](https://docsify.js.org) and  using the **docs-as-code** philosophy, sometimes referred to as docs-like-code. Other products like [GitBook](https://www.gitbook.com) and [MkDocs](https://www.mkdocs.org) are also a great choices.
 
 <!--------------------------------------
 DOCS-LIKE-CODE
@@ -25,6 +25,8 @@ This means following the same workflows as development teams, and being integrat
 **GitBook** has an online editor but will also pull markdown files from a GitHub repo. GitBook then hosts the documentation set for you.
 
 **MkDocs** a simple to use markdown renderer that focuses on a single but small YAML definitions file.
+
+# add stopring docs in repo with or nrxt to code repo in same org
 
 <!--------------------------------------
 HEROKU

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+const js2xmlparser = require("js2xmlparser");
 const debug = require('debug')('notes:notes');
 var jwt = require('jsonwebtoken');
 
@@ -12,7 +12,9 @@ const getNotes  = require('../libs/models').getNotes;
 
 /**
  * GET /notes
- * Gets the current user's notes.
+ * Gets the current user's notes. There is search by content and tags. Pagination with limit and skip.
+ * 
+ * @todo Add the skip/limit/content/tag filters.
  */
 router.get('/', function(req, res, next) {
   try{
@@ -20,10 +22,16 @@ router.get('/', function(req, res, next) {
     const email = tokens.validateToken(req.get('Authorization'), res);
     debug(email);
 
+    // Theses may be undefined or empty
+    const skip = req.query.skip; 
+    const limit = req.query.limit;
+    const content = req.query.content;
+    const tags = req.query.tags;
+
     let cnt = 0;
     n = [];
     getNotes().forEach( (element)=>{
-      debug('el', element);
+      //debug('el', element);
       if(element.email === email){
         n.push(element);
       }
@@ -31,11 +39,11 @@ router.get('/', function(req, res, next) {
 
     if(req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
-      res.send(200, js2xmlparser.parse("notes",n));
+      res.send(200, js2xmlparser.parse("notes",{note:n}));
     }
     else{
       res.type('application/json');
-      res.send(200, {email:email, notes:n});
+      res.send(200, {notes:n});
     }
   }
   catch(err){
@@ -43,6 +51,7 @@ router.get('/', function(req, res, next) {
     throw(err);
   }
 });
+
 
 router.post('/', function(req, res, next) {
   try{

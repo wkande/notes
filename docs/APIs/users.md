@@ -16,7 +16,7 @@ Most email gateways will accept an email address and enter it into a queue to be
 
 ---
 
-<span class="method get">POST</span> /user/code
+<span class="method post">POST</span> /user/code
 
 ---
 
@@ -24,7 +24,7 @@ Most email gateways will accept an email address and enter it into a queue to be
 
 | Name         | Type    | In     | Description |
 | :---         | :---    | :---   | :--- |
-| Content-Type | strint  | header | ^ application/x-www-form-urlencoded |
+| Content-Type | string  | header | ^ application/x-www-form-urlencoded |
 | Accept       | string  | header | application/json or application/xml |
 | email        | string  | body   | ^ user's email address |
 
@@ -67,7 +67,7 @@ console.log(resp.data);
 ##### **Status**
 
 ```text
-- 201 OK
+- 201 Created
 - 400 Bad Request
 - 429 To Many Requests
 - 431 Request Header Fields Too Large
@@ -107,7 +107,7 @@ GET A TOKEN
 
 Send the code received from [POST /user/code](APIs/users.md#CreateACode) to **GET /user/token**. The JWT token returned by GET /user/token is used to access other endpoints.
 
-<span class="method get">POST</span> /user/token
+<span class="method get">GET</span> /user/token
 
 ---
 
@@ -193,7 +193,7 @@ GET CURRENT USER
 
 Gets information about the current user as known in the JWT token that is passed in the header.
 
-<span class="method get">POST</span> /user
+<span class="method get">GET</span> /user
 
 ---
 
@@ -202,7 +202,7 @@ Gets information about the current user as known in the JWT token that is passed
 | Name          | Type    | In      | Description |
 | :---          | :---    | :---    | :--- |
 | Accept        | string  | header  | application/json or application/xml |
-| Authorization | string  | header  | ^ JWT token |
+| Authorization | string  | header  | ^ Bearer JWT-token |
 
 ^ required
 
@@ -226,7 +226,7 @@ curl -X GET "https://docs-as-code.herokuapp.com/user" \
 ```javascript
 const axios = require('axios');
 const options = {
-  "headers": {"Authorization": "Bearer 1234FRTG67", "Accept":"Bearer KJD877GTSH543H"}
+  "headers": {"Authorization": "Bearer 1234FRTG67", "Accept":"application/json"}
 };
 
 const resp = await axios.get("https://docs-as-code.herokuapp.com/user", {}, options)

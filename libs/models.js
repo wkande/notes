@@ -30,12 +30,12 @@ var notes = [];
 
 
 class Note {
-  constructor(email, text, tags) {
+  constructor(email, content, tags) {
     this.id = shortid.generate();
     this.email = email;
-    this.text = text;
+    this.content = content;
     this.tags = tags;
-    this.ddtm = new Date();
+    this.dttm = new Date();
     
   }
 }

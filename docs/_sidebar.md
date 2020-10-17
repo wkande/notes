@@ -29,4 +29,7 @@
 
   - [Notes](APIs/notes.md)
 
+    
+  - [Tags](APIs/tags.md)
+
 
