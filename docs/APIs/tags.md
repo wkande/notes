@@ -1,6 +1,6 @@
 ## What are Tags?
 
-**Tags** are attached to notes to aid in searching. A note can have one or many tags. Tags are stored in the note as a string of words.
+**Tags** are embedded in notes to aid in searching. A note can have one or many tags. Tags are stored in the note as a string of words.
 
 ```json
 {

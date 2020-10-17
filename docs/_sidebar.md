@@ -1,4 +1,7 @@
-<img src="assets/frog.png" style="width:80px;margin-top:-180px;margin-left:45px;">
+<a href="/">
+  <div id="notesTitle">Notes</div>
+  <img id="notesLogo" src="assets/frog.png">
+</a>
 
 <!-- IMPORTANT NOTES -->
 

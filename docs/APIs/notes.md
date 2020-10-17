@@ -439,7 +439,7 @@ Deletes a **Note** using the note's :id and the email address in the JWT token p
 
 ---
 
-<span class="method patch">DELETE</span> /note/:id
+<span class="method delete">DELETE</span> /note/:id
 
 ---
 

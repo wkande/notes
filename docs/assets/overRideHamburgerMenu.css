@@ -1,0 +1,30 @@
+.sidebar-toggle {
+  position: absolute;
+  top: 0px;
+  bottom: auto;
+  left: 0;
+  max-width:60px;
+}
+
+.search {
+  margin-top: 40px;
+}
+
+#notesTitle{
+  color: olivedrab; /* 3cb371 */ 
+  position: absolute;
+  top: 5px;
+  bottom: auto;
+  left: 140px;
+  font-size:xx-large;
+  font-style:italic;
+  font-weight:bold;
+}
+
+#notesLogo{
+  width:80px;
+  position: absolute;
+  top: 3px;
+  bottom: auto;
+  left: 60px;
+}

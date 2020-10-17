@@ -26,7 +26,7 @@ This means following the same workflows as development teams, and being integrat
 
 **MkDocs** a simple to use markdown renderer that focuses on a single but small YAML definitions file.
 
-**Git** is a major player for docs-like-code. Documentations is often stored right along side the code. The most common practice is to store the docs in a separate repo from the code, while both repos exist within the same organization.
+**Git** is a major player for docs-like-code. Documentation is often stored right along side the code. The most common practice is to store the docs in a separate repo from the code, while both repos exist within the same organization.
 
 > Store docs in the same repo as the code.
 > <br>Usually when the Developer is also the Tech Writer.
