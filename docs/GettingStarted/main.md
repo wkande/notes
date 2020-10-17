@@ -26,7 +26,17 @@ This means following the same workflows as development teams, and being integrat
 
 **MkDocs** a simple to use markdown renderer that focuses on a single but small YAML definitions file.
 
-# add stopring docs in repo with or nrxt to code repo in same org
+**Git** is a major player for docs-like-code. Documentations is often stored right along side the code. The most common practice is to store the docs in a separate repo from the code, while both repos exist within the same organization.
+
+> Store docs in the same repo as the code.
+> <br>Usually when the Developer is also the Tech Writer.
+> <br>Smaller projects.
+
+> Store docs and code in separate repos but in the same orgainzation.
+> <br>Usually when the Developer and the Tech Writer are two different people.
+> <br>Larger projects.
+
+The **Notes** project stores its docs in the same repo as the code on GitHub. There are other great players such as BitBucket and GitLabs to name a few.
 
 <!--------------------------------------
 HEROKU
