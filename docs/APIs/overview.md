@@ -8,7 +8,7 @@ The APIs implement an **Email-Code-Token** mechanism for authentication using [j
 
 The **Token** must be used to authenticate all other endpoints.
 
-Try the **Email-Code-Token** mechanism using Insomnia. See the [Insomnia](/#insomnia) section of this guide for more information.
+Try the **Email-Code-Token** mechanism using Insomnia. See the [Insomnia](/#Insomnia) section of this guide for more information.
 
 ## Accept Header
 

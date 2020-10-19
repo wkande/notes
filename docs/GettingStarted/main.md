@@ -44,7 +44,7 @@ HEROKU
 
 ## Heroku
 
-There is a **Heroku Dyno** running **Notes**. Call it using CURL, with your App or with [Insomnia](#Insomnia). The dyno uses a free tier plan and may be idle. Calling an idle dyno may take a moment to come alive. Subsequent calls will be fast.
+There is a **Heroku Dyno** running **Notes**. Call it using CURL, with your App or with [Insomnia](/#Insomnia). The dyno uses a free tier plan and may be idle. Calling an idle dyno may take a moment to come alive. Subsequent calls will be fast.
 
 Change the **email=me@domain.com** below to your email address. A code will be sent to your email address from support@lelandcreek.com.
 
