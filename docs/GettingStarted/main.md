@@ -64,7 +64,7 @@ You can execute all the APIs using [Insomnia](https://insomnia.rest) by download
 
 ##### Import the Notes API Definitions
 
-1. Download the <a id="raw-url" href="Insomnia.json.zip">Notes API Definitions</a> file
+1. Download the <a id="raw-url" href="GettingStarted/Insomnia.json.zip">Notes API Definitions</a> file
 
 1. Choose **Preferences** from the Insomnia Menu
 
