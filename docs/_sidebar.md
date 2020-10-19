@@ -1,4 +1,6 @@
-<a href="/">
+<!-- For GitHub pages the path must be /notes -->
+<!-- Dev the path must be / -->
+<a href="/notes">
   <div id="notesTitle">Notes</div>
   <img id="notesLogo" src="assets/frog.png">
 </a>
