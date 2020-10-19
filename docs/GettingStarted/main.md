@@ -60,7 +60,7 @@ INSOMNIA
 
 ## Insomnia
 
-You can execute all the APIs using [Insomnia](https://insomnia.rest) by downloading, unzipping and importing the <a id="raw-url" href="../GettingStarted/Insomnia.json.zip">Notes API Definitions</a> file into Insomnia. Everything is set up and ready to go.  While the APIs can return either JSON or XML, all Insomnia requests are setup to return JSON.
+You can execute all the APIs using [Insomnia](https://insomnia.rest) by downloading, unzipping and importing the <a id="raw-url" href="GettingStarted/Insomnia.json.zip">Notes API Definitions</a> file into Insomnia. Everything is set up and ready to go.  While the APIs can return either JSON or XML, all Insomnia requests are setup to return JSON.
 
 ##### Import the Notes API Definitions
 
