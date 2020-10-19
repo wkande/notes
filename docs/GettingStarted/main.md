@@ -74,7 +74,7 @@ You can execute all the APIs using [Insomnia](https://insomnia.rest) by download
 
 1. Locate and import the **Notes API Definitions** file
 
-![insomnia](../assets/insomnia.png)
+![insomnia](assets/insomnia.png)
 
 ##### Try Authenticating
 
