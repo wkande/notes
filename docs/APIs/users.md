@@ -10,7 +10,7 @@ CREATE A CODE
 
 ## Create a Code
 
-Collect the user's email address and send it to the **POST /user/code** endpoint. A six digit code will be sent to the user's email account.  The code should then be sent to **GET /user/token** to receive a JWT token to use with other endpoints.
+Collect the user's email address and send it to the [POST /user/code](#Get-A-Token) endpoint. A six digit code will be sent to the user's email account.  The code should then be sent to [GET /user/token** to receive a JWT token to use with other endpoints.
 
 Most email gateways will accept an email address and enter it into a queue to be delivered in the future. This does not guarantee delivery. This endpoint will return a status=201 once the gateway "accepts" the email address for delivery, though it might fail in the future.
 
@@ -105,7 +105,7 @@ GET A TOKEN
 
 ## Get a Token
 
-Send the code received from [POST /user/code](APIs/users.md#CreateACode) to **GET /user/token**. The JWT token returned by GET /user/token is used to access other endpoints.
+Send the code received from [POST /user/code](#Create-A-Code) to **GET /user/token**. The JWT token returned by GET /user/token is used to access other endpoints.
 
 <span class="method get">GET</span> /user/token
 
