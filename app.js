@@ -17,6 +17,7 @@ const js2xmlparser = require("js2xmlparser");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var notesRouter = require('./routes/notes');
+var noteRouter = require('./routes/note');
 var tagsRouter = require('./routes/tags');
 const closeRedis  = require('./libs/models').closeRedis;
 const debug = require('debug')('notes:app');
@@ -34,8 +35,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/user', usersRouter);
+app.use('/note', noteRouter);
 app.use('/notes', notesRouter);
-app.use('/note', notesRouter);
+
 app.use('/tags', tagsRouter);
 
 

@@ -20,7 +20,7 @@ GET USER'S TAGS
 
 ## Get user's Tags
 
-Gets a list of unique tags used by all the user's notes. The JWT token sent in the header is used to idenitfy the user by their email address.
+Gets a list of unique **Tags** used within a user's notes. The JWT token sent in the header is used to idenitfy the user by their email address.
 
 ---
 

@@ -28,7 +28,7 @@ There is an optional search to filter the notes by content and tags. Optional pa
 - **/notes?skip=0&limit=25** (first 25 notes, 1-25)
 - **/notes?skip=25&limit=25** (notes 26-50)
 - **/notes?content=Madison** (notes with Madison in the content)
-- **/notes?tags=Saturday%20Tuesday** (notes with Satruday or Tuesday in the tags)
+- **/notes?tags=Saturday%20Tuesday** (notes with Saturday or Tuesday in the tags)
 - **/notes?content=Madison&skip=0&limit=25** (first 25 notes with Madison in the content)
 
 ---
@@ -151,7 +151,7 @@ GET A NOTE
 
 ## Get a Note
 
-Gets a single note. A note identified by the note's :id must belong to the user. The JWT token sent in the header is used to idenitfy the user  by their email address.
+Gets a single note. A note identified by the note's id must belong to the user. The JWT token sent in the header is used to idenitfy the user  by their email address.
 
 <span class="method get">GET</span> /note/:id
 
@@ -261,6 +261,7 @@ Creates a new **Note** using the email address in the JWT token passed in the he
 | :---         | :---    | :---   | :--- |
 | Content-Type | string  | header | ^ application/x-www-form-urlencoded |
 | Accept       | string  | header | application/json or application/xml |
+| Authorization  | string  | header | ^ Bearer JWT-token |
 | content      | string  | body   | ^ text, the note itself |
 | tags         | string  | body   | one or many words |
 
@@ -363,6 +364,7 @@ Updates the content and/or the tags of a **Note** using the note's id and the em
 | :---         | :---    | :---   | :--- |
 | Content-Type | string  | header | ^ application/x-www-form-urlencoded |
 | Accept       | string  | header | application/json or application/xml |
+| Authorization  | string  | header | ^ Bearer JWT-token |
 | id           | string  | path   | ^ id of the note |
 | content      | string  | body   | ^ text, the note itself |
 | tags         | string  | body   | one or many words |
@@ -438,7 +440,7 @@ DELETE A NOTES
 
 ## Delete a Note
 
-Deletes a **Note** using the note's :id and the email address in the JWT token passed in the header.
+Deletes a **Note** using the note's id and the email address in the JWT token passed in the header.
 
 ---
 
@@ -451,6 +453,7 @@ Deletes a **Note** using the note's :id and the email address in the JWT token p
 | Name         | Type    | In     | Description |
 | :---         | :---    | :---   | :--- |
 | Accept       | string  | header | application/json or application/xml |
+| Authorization  | string  | header | ^ Bearer JWT-token |
 | id           | string  | path   | ^ id of the note |
 
 ^ required

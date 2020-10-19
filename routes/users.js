@@ -7,15 +7,16 @@ var nodemailer = require('nodemailer');
 //const notes  = require('../libs/models').notes;
 const Note  = require('../libs/models').Note;
 const tokens = require("../libs/tokens");
-const storeNote  = require('../libs/models').storeNote;
+const addNote  = require('../libs/models').addNote;
 const getNotes  = require('../libs/models').getNotes;
 
 
 // XML conversion
 // let usersXML = {user:[{id:1, email:'warren@wyosoft.com'}, {id:2, email:'gayle@wyosoft.com'}]};
 // let usersXML2 = {user:users};
-let users = [{id:1, email:'warren@wyosoft.com'}, {id:2, email:'gayle@wyosoft.com'}];
+// let users = [{id:1, email:'warren@wyosoft.com'}, {id:2, email:'gayle@wyosoft.com'}];
 let codes = [];
+
 
 /**
  * GET /user
@@ -93,13 +94,13 @@ router.post('/code', function(req, res, next) {
     });
 
  
-    const user = {email:email, temp_code:code, code:'A code was sent to the email address.', ip:ip};
+    const user = {email:email, code:'A code was sent to the email address.', ip:ip};
     codes.push({email:email, code:code});
     debug('codes array', codes);
 
     // Send email
-    //let result = sendEmail(email, code);
-    //debug(result);
+    let result = sendEmail(email, code);
+    debug(result);
 
     // Send response
     if (req.get("accept").toLowerCase() === 'application/xml'){
@@ -150,7 +151,7 @@ router.get('/token', function(req, res, next) {
     }
 
     // Ready to send the token. Add a note about it.
-    storeNote(new Note(email, 'Sent a new token.', 'token'));
+    addNote(new Note(email, 'Sent a new token.', 'token'));
 
     if (req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
@@ -212,8 +213,8 @@ async function sendEmail(email, code){
             <br><br>Regards,<br>Notes Support</div>`
     };
     let result = await transporter.sendMail(mailOptions);
-    console.log('----- EMAIL SEND RESULT -----');
-    console.log(result);
+    debug('----- EMAIL SEND RESULT -----');
+    debug(result);
   }
   catch(err){
     console.error('----- EMAIL SEND ERROR -----');

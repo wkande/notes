@@ -56,7 +56,7 @@ module.exports.Note = Note;
  */
 module.exports.addNote = function(note){
   try{
-    debug('----- storeNote - UPDATE REDIS -----')
+    debug('----- addNote - UPDATE REDIS -----')
     notes.push(note);
     client.set("notes", JSON.stringify(notes), function(err) {
       if(err) throw err;

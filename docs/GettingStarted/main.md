@@ -20,7 +20,7 @@ This means following the same workflows as development teams, and being integrat
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ftnVllssoI8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-**Docsify** generates documentation on the fly. It smartly loads and parses Markdown files and displays them as a website. Needless-to-say, this guide is a Docsify website. The **API Reference Guide** for Notes is a set of markdown files rendered by Docisfy and some of its many plugins. This guide is hosted by the GitHub Pages site attached to the [Notes GitHub Repo](https://github.com/wkande/notes).
+**Docsify** generates documentation on the fly. It smartly loads and parses Markdown files and displays them as a website. The **API Reference Guide** for Notes is a set of markdown files rendered by Docisfy and some of its many plugins. This guide is hosted by the GitHub Pages site attached to the [Notes GitHub Repo](https://github.com/wkande/notes).
 
 **GitBook** has an online editor but will also pull markdown files from a GitHub repo. GitBook then hosts the documentation set for you.
 
@@ -62,15 +62,27 @@ INSOMNIA
 
 You can execute all the APIs using [Insomnia](https://insomnia.rest) by downloading, unzipping and importing the <a id="raw-url" href="../GettingStarted/Insomnia.json.zip">Notes API Definitions</a> file into Insomnia. Everything is set up and ready to go.  While the APIs can return either JSON or XML, all Insomnia requests are setup to return JSON.
 
+##### Import the Notes API Definitions
+
+1. Download the <a id="raw-url" href="../GettingStarted/Insomnia.json.zip">Notes API Definitions</a> file
+
+1. Choose **Preferences** from the Insomnia Menu
+
+1. Select the **Data** tab
+
+1. Select **Import Data** > **From File**
+
+1. Locate and import the **Notes API Definitions** file
+
 ![insomnia](../assets/insomnia.png)
 
 ##### Try Authenticating
 
 Be sure you are using the **prod** environment.
 
-1. Select the **Create a Code** endpoint > select the **Send** button > enter your **Email Address**.
+1. Select the **Users** folder > **Create a Code** endpoint > select the **Send** button > enter your **Email Address**.
 
-1. Get the code from your email.
+1. Get the **Code** from your email.
 
 1. Select the **Get a Token** endpoint > select the **Send** button > enter your **Code** .
 
@@ -78,7 +90,7 @@ Be sure you are using the **prod** environment.
 
 ##### Get your Notes
 
-When you authenticated for the first time a welcome note was created for you.
+When you authenticated a note was created for you.
 
 1. Select the **Get user Notes** endpoint > select the **Send** button.
 

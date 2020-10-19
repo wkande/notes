@@ -18,10 +18,9 @@ router.get('/', function(req, res, next) {
     const email = tokens.validateToken(req.get('Authorization'), res);
     debug('TAGS', email);
 
-    // Get distinc tags
+    // Get distinct tags
     let n = [];
     getNotes().forEach((element) => {
-      console.log(element);
       let tags = element.tags.split(' ');
       for (var i=0; i<tags.length; i++){
         tags[i].trim();

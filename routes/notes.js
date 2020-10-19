@@ -31,7 +31,7 @@ router.get('/', function(req, res, next) {
     const tags = req.query.tags;
 
     let cnt = 0;
-    n = [];
+    let n = [];
     getNotes().forEach( (element)=>{
       if(element.email === email){
         n.push(element);
@@ -53,98 +53,6 @@ router.get('/', function(req, res, next) {
   }
 });
 
-
-router.post('/', function(req, res, next) {
-  try{
-    // JWY verify and get the email
-    const email = tokens.validateToken(req.get('Authorization'), res);
-    const content = req.body.content;
-    const tags = req.body.tags;
-
-    if(!content){
-      res.status(400);
-      throw {message:"No content for the note was sent."};
-    }
-
-    const note = new Note(email, content, tags);
-    addNote(note);
-
-    if(req.get("accept").toLowerCase() === 'application/xml'){
-      res.type('application/xml');
-      res.send(201, js2xmlparser.parse("note",notes));
-    }
-    else{
-      res.type('application/json');
-      res.send(201, {email:email, note:note});
-    }
-  }
-  catch(err){
-    debug(err);
-    throw(err);
-  }
-});
-
-
-router.put('/', function(req, res, next) {
-  try{
-    // JWY verify and get the email
-    const email = tokens.validateToken(req.get('Authorization'), res);
-    const id = req.query.id
-    const content = req.body.content;
-    const tags = req.body.tags;
-
-    if(!content){
-      res.status(400);
-      throw {message:"No content for the note was sent"};
-    }
-
-    // Does the user own this note?
-    if(!verifyNoteOwnership(id, email)){
-      res.status(403);
-      throw {message:"You cannot change that note, please check the id."};
-    }
-
-    const note = new Note(email, content, tags);
-    note.id = id;
-    updateNote(note);
-
-    if(req.get("accept").toLowerCase() === 'application/xml'){
-      res.type('application/xml');
-      res.send(201, js2xmlparser.parse("note",notes));
-    }
-    else{
-      res.type('application/json');
-      res.send(201, {email:email, note:note});
-    }
-  }
-  catch(err){
-    debug(err);
-    throw(err);
-  }
-});
-
-
-router.delete('/', function(req, res, next) {
-  try{
-    // JWY verify and get the email
-    const email = tokens.validateToken(req.get('Authorization'), res);
-    const id = req.query.id;
-
-    // Does the user own this note?
-    if(!verifyNoteOwnership(id, email)){
-      res.status(403);
-      throw {message:"You cannot change that note, please check the id."};
-    }
-    deleteNote(id, email);
-
-    res.type('application/json');
-    res.status(204).send()
-  }
-  catch(err){
-    debug(err);
-    throw(err);
-  }
-});
 
 
 module.exports = router;
