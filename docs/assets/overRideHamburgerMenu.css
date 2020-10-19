@@ -6,6 +6,11 @@
   max-width:60px;
 }
 
+.sidebar-toggle span {
+  width: 24px;
+  height: 4px;
+  }
+
 .search {
   margin-top: 40px;
 }

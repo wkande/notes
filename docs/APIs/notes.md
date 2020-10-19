@@ -306,6 +306,7 @@ console.log(resp.data);
 ```text
 - 201 Created
 - 400 Bad Request
+- 401 Unauthorized
 - 429 To Many Requests
 - 431 Request Header Fields Too Large
 - 500 Internal server error
@@ -348,11 +349,11 @@ UPDATE A NOTE
 
 ## Update a Note
 
-Updates the content and/or the tags of a **Note** using the note's :id and the email address in the JWT token passed in the header.
+Updates the content and/or the tags of a **Note** using the note's id and the email address in the JWT token passed in the header.
 
 ---
 
-<span class="method patch">PATCH</span> /note/:id
+<span class="method put">PUT</span> /note/:id
 
 ---
 
@@ -380,7 +381,7 @@ Updates the content and/or the tags of a **Note** using the note's :id and the e
 curl -d "content=Check on loan with the bank.&tags=tuesday thursday" \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Accept:application/json" \
--X PATCH https://docs-as-code.herokuapp.com/note/X-CKYqQcj | json_pp
+-X PUT https://docs-as-code.herokuapp.com/note/X-CKYqQcj | json_pp
 ```
 
 ##### **Javascript**
@@ -391,7 +392,7 @@ const options = {
   "headers": {"Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"}
 };
 
-const resp = await axios.patch("https://docs-as-code.herokuapp.com/note/X-CKYqQcj", 
+const resp = await axios.put("https://docs-as-code.herokuapp.com/note/X-CKYqQcj", 
   {"content":"Check on loan with the bank.", "tags":"tuesday thursday"}, options)
 console.log(resp.data);
 ```
@@ -408,6 +409,8 @@ console.log(resp.data);
 ```text
 - 204 No Content
 - 400 Bad Request
+- 401 Unauthorized
+- 403 Forbidden
 - 429 To Many Requests
 - 431 Request Header Fields Too Large
 - 500 Internal server error
@@ -489,6 +492,8 @@ console.log(resp.data);
 ```text
 - 204 No Content
 - 400 Bad Request
+- 401 Unauthorized
+- 403 Forbidden
 - 429 To Many Requests
 - 431 Request Header Fields Too Large
 - 500 Internal server error

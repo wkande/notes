@@ -1,11 +1,17 @@
 /*jshint esversion: 6 */
 
+
 const shortid = require('shortid');
 const redis = require('redis');
+const { response } = require('express');
 const debug = require('debug')('notes:models');
 var notes = [];
 
 
+/**
+ * This script runs at startup to connect to RedisLabs where the 
+ * notes are stored.
+ */
 // STARTUP
     debug('Running startup script');
     // Connect to RedisLabs
@@ -17,18 +23,17 @@ var notes = [];
 
     client.get("notes", function(err, obj) {
       // arr is null when the key is missing
-      console.log('err', err);
-      console.log(obj);
+      if(err) console.log('err', err);
       notes = JSON.parse(obj);
-      console.log(notes[0].email);
       debug('Notes array length:', notes.length);
-      debug('Loaded');
+      debug('Connection to RedisLabs OK');
     });
-
-    
 // END STARTUP
 
 
+/**
+ * Note class definition
+ */
 class Note {
   constructor(email, content, tags) {
     this.id = shortid.generate();
@@ -44,24 +49,108 @@ class Note {
 // EXPORTS
 module.exports.Note = Note;
 
-module.exports.storeNote = function(note){
+
+/**
+ * Adds a new note
+ * @param {*} note 
+ */
+module.exports.addNote = function(note){
   try{
-    console.log('----- UPDATE REDIS -----')
-    notes.push(note)
-    console.log(notes.length)
+    debug('----- storeNote - UPDATE REDIS -----')
+    notes.push(note);
     client.set("notes", JSON.stringify(notes), function(err) {
-      console.error(err);
+      if(err) throw err;
     });
   }
   catch(err){
-    console.log(err);
+    debug(err);
+    throw err;
   }
 }
 
+
+/**
+ * Updates an existing note.
+ * @param {*} note 
+ */
+module.exports.updateNote = function(note){
+  try{
+    debug('----- updateNote - UPDATE REDIS -----')
+    // Find the note
+    notes.forEach( (element, i)=>{
+      if(element.email === note.email && element.id === note.id){
+        notes.splice(i,1); // Delete the note
+        notes.push(note); // Add updated note back in
+        client.set("notes", JSON.stringify(notes), function(err) {
+          if(err) throw err;
+        });
+      }
+    });
+  }
+  catch(err){
+    debug(err);
+    throw err;
+  }
+}
+
+
+/**
+ * Deletes a note
+ * @param {*} id 
+ * @param {*} email 
+ */
+module.exports.deleteNote = function(id, email){
+  try{
+    debug('----- deleteNote - UPDATE REDIS -----')
+    // Find the note and remove it
+    notes.forEach( (element, i)=>{
+      if(element.email === email && element.id === id){
+        notes.splice(i,1); // Delete the note
+        client.set("notes", JSON.stringify(notes), function(err) {
+          if(err) throw err;
+        });
+      }
+    }); 
+  }
+  catch(err){
+    debug(err);
+    throw err;
+  }
+}
+
+
+/**
+ * Verifyies note ownership by id and email. The email should be extracted from the token
+ * @param {*} id 
+ * @param {*} email 
+ */
+module.exports.verifyNoteOwnership = function(id, email){
+  try{
+    debug('----- verifyNoteOwnership -----')
+    // Find the note
+    for(var i=0; i<notes.length; i++){
+      if(notes[i].email === email && notes[i].id === id){
+        return true;
+      }
+    }
+    return false;
+  }
+  catch(err){
+    debug(err);
+    return false;
+  }
+}
+
+
+/**
+ * Return the entire notes array. Caller must take care to consider note ownership.
+ */
 module.exports.getNotes = function(){
   return notes;
 }
 
+
+// Closes the connection to RedisLabs where the notes are stored.
 module.exports.closeRedis = function(){
   console.log('Closing connection to RedisLabs');
   client.quit();

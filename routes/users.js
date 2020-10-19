@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 const js2xmlparser = require("js2xmlparser");
 const debug = require('debug')('notes:users');
-var jwt = require('jsonwebtoken');
-const { token } = require('morgan');
+//const { token } = require('morgan');
 var nodemailer = require('nodemailer');
 //const notes  = require('../libs/models').notes;
 const Note  = require('../libs/models').Note;
@@ -24,7 +23,7 @@ let codes = [];
  */
 router.get('/', function(req, res, next) {
   try{
-    // JWY verify return the email
+    // JWY verify and get the email
     const email = tokens.validateToken(req.get('Authorization'), res);
     debug(email);
 

@@ -4,6 +4,9 @@ if(!process.env.NODE_ENV){
   console.info('  -> DEVELOPMENT MODE');
   require('dotenv').config();
 }
+console.log('  NODE_ENV ->', process.env.NODE_ENV);
+console.log('  EMAIL_PSWD ->', process.env.EMAIL_PSWD);
+console.log('  JWT_SECRET ->', process.env.JWT_SECRET);
 console.info('/*-------------------------*/\n');
 
 var express = require('express');
@@ -14,6 +17,7 @@ const js2xmlparser = require("js2xmlparser");
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var notesRouter = require('./routes/notes');
+var tagsRouter = require('./routes/tags');
 const closeRedis  = require('./libs/models').closeRedis;
 const debug = require('debug')('notes:app');
 var app = express();
@@ -32,22 +36,21 @@ app.use('/users', usersRouter);
 app.use('/user', usersRouter);
 app.use('/notes', notesRouter);
 app.use('/note', notesRouter);
-
-console.log('NODE_ENV ->', process.env.NODE_ENV);
-console.log('EMAIL_PSWD ->', process.env.EMAIL_PSWD);
-console.log('JWT_SECRET ->', process.env.JWT_SECRET);
+app.use('/tags', tagsRouter);
 
 
 /*------------------- Ending Node.js --------------------*/
 function exitHandler(options, exitCode) {
-  closeRedis();
+  console.info('\n------------ exitHandler --------------')
+  console.info(options, exitCode);
+  if (options.exit) closeRedis();
   if (options.cleanup) console.log('clean');
-  if (exitCode || exitCode === 0) console.log(exitCode);
+  if (exitCode || exitCode === 0) console.log('Exit code:', exitCode);
   if (options.exit) process.exit();
 }
 
 // do something when app is closing
-process.on('exit', exitHandler.bind(null,{cleanup:true}));
+process.on('exit', exitHandler.bind(null, {cleanup:true}));
 
 // catches ctrl+c event
 process.on('SIGINT', exitHandler.bind(null, {exit:true}));
