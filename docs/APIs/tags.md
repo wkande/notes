@@ -20,7 +20,7 @@ GET USER'S TAGS
 
 ## Get user's Tags
 
-Gets a list of unique **Tags** used within a user's notes. The JWT token sent in the header is used to idenitfy the user by their email address.
+Gets a list of unique **Tags** used within a user's notes. The email address in the JWT token is used to identify the user.
 
 ---
 
@@ -111,8 +111,187 @@ console.log(resp.data);
 
 <!-- tabs:end -->
 
+
+---
+
 <!--------------------------------------
-GET A NOTE
+UPDATE A TAG
 --------------------------------------->
+
+---
+
+## Update a Tag
+
+Updates a particular **Tag** within all of the user's notes. Useful to correct misspelled tags. The old tag is passed in the path and the new tag spelling is passed in the body. The email address in the JWT token is used to identify the user.
+
+---
+
+<span class="method put">PUT</span> /tag/:tag
+
+---
+
+**Parameters**
+
+| Name         | Type    | In     | Description |
+| :---         | :---    | :---   | :--- |
+| Content-Type | string  | header | ^ application/x-www-form-urlencoded |
+| Accept       | string  | header | application/json or application/xml |
+| Authorization  | string  | header | ^ Bearer JWT-token |
+| tag           | string  | path   | ^ new spelling of the tag |
+
+^ required
+
+---
+
+### Examples
+
+<!-- tabs:start -->
+
+##### **CURL**
+
+```bash
+curl -d "tag=Saturday" \
+-H "Content-Type: application/x-www-form-urlencoded" \
+-H "Accept:application/json" \
+-H "Authorization: Bearer 1234FRTG67" \
+-X PUT https://docs-as-code.herokuapp.com/tag/sartuday | json_pp
+```
+
+##### **Javascript**
+
+```javascript
+const axios = require('axios');
+const options = {
+  "headers": {"Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Authorization": "Bearer 1234FRTG67",}
+};
+
+const resp = await axios.put("https://docs-as-code.herokuapp.com/tag/sartuday", 
+  {"tag":"Saturday"}, options)
+console.log(resp.data);
+```
+<!-- tabs:end -->
+
+---
+
+### Response
+
+<!-- tabs:start -->
+
+##### **Status**
+
+```text
+- 200 OK
+- 400 Bad Request
+- 401 Unauthorized
+- 403 Forbidden
+- 429 To Many Requests
+- 431 Request Header Fields Too Large
+- 500 Internal server error
+```
+
+##### **JSON**
+
+```json
+{
+  "tag_old":"sartuday",
+  "tag_new":"Saturday"
+}
+```
+
+##### **XML**
+
+```xml
+none
+```
+
+<!-- tabs:end -->
+
+---
+
+<!--------------------------------------
+DELETE A TAG
+--------------------------------------->
+
+## Delete a Tag
+
+Deletes a particular **Tag**  from all of the user's notes. The email address in the JWT token is used to identify the user.
+
+---
+
+<span class="method delete">DELETE</span> /tag/:tag
+
+---
+
+**Parameters**
+
+| Name          | Type    | In     | Description |
+| :---          | :---    | :---   | :--- |
+| Accept        | string  | header | application/json or application/xml |
+| Authorization | string  | header | ^ Bearer JWT-token |
+| tag           | string  | path   | ^ a tag used in user's notes |
+
+^ required
+
+---
+
+### Examples
+
+<!-- tabs:start -->
+
+##### **CURL**
+
+```bash
+curl -H "Accept:application/json" \
+-H "Authorization: Bearer 1234FRTG67" \
+-X DELETE https://docs-as-code.herokuapp.com/tag/tuesday | json_pp
+```
+
+##### **Javascript**
+
+```javascript
+const axios = require('axios');
+const options = {
+  "headers": {"Accept": "application/json",
+              "Authorization": "Bearer 1234FRTG67",}
+};
+
+const resp = await axios.delete("https://docs-as-code.herokuapp.com/tag/tuesday", options)
+console.log(resp.data);
+```
+<!-- tabs:end -->
+
+---
+
+### Response
+
+<!-- tabs:start -->
+
+##### **Status**
+
+```text
+- 204 No Content
+- 400 Bad Request
+- 401 Unauthorized
+- 403 Forbidden
+- 429 To Many Requests
+- 431 Request Header Fields Too Large
+- 500 Internal server error
+```
+
+##### **JSON**
+
+```json
+none
+```
+
+##### **XML**
+
+```xml
+none
+```
+
+<!-- tabs:end -->
 
 ---

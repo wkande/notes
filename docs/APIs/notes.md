@@ -20,7 +20,7 @@ GET USER'S NOTES
 
 ## Get user's Notes
 
-Gets a list of all notes associated with a user's email address. The JWT token sent in the header is used to idenitfy the user by their email address.
+Gets a list of all notes associated with a user's email address. The email address in the JWT token is used to identify the user.
 
 There is an optional search to filter the notes by content and tags. Optional pagination using skip and limit will determine the number of notes returned.
 
@@ -99,24 +99,23 @@ console.log(resp.data);
 ##### **JSON**
 
 ```json
-{
-  "notes": [
-    {
-      "id": "-UB_Ja5Qq",
-      "email": "warren@wyosoft.com",
-      "content": "Sent a new token.",
-      "tags": "token",
-      "dttm": "2020-10-17T13:52:22.027Z"
-    },
-    {
-      "id": "AU7_Ja5Us",
-      "email": "warren@wyosoft.com",
-      "content": "My first note.",
-      "tags": "today",
-      "dttm": "2020-10-16T11:12:11.047Z"
-    }
-  ]
-}
+[
+  {
+    "id": "-UB_Ja5Qq",
+    "email": "me@mydomain.com",
+    "content": "Sent a new token.",
+    "tags": "token",
+    "dttm": "2020-10-17T13:52:22.027Z"
+  },
+  {
+    "id": "AU7_Ja5Us",
+    "email": "me@mydomain.com",
+    "content": "My first note.",
+    "tags": "today",
+    "dttm": "2020-10-16T11:12:11.047Z"
+  }
+]
+
 ```
 
 ##### **XML**
@@ -151,7 +150,7 @@ GET A NOTE
 
 ## Get a Note
 
-Gets a single note. A note identified by the note's id must belong to the user. The JWT token sent in the header is used to idenitfy the user  by their email address.
+Gets a single note. A note identified by the note's id must belong to the user. The email address in the JWT token is used to identify the user.
 
 <span class="method get">GET</span> /note/:id
 
@@ -350,7 +349,7 @@ UPDATE A NOTE
 
 ## Update a Note
 
-Updates the content and/or the tags of a **Note** using the note's id and the email address in the JWT token passed in the header.
+Updates the content and/or the tags of a **Note** using the note's id and the email address. The email address in the JWT token is used to identify the user.
 
 ---
 
@@ -409,7 +408,7 @@ console.log(resp.data);
 ##### **Status**
 
 ```text
-- 204 No Content
+- 200 OK
 - 400 Bad Request
 - 401 Unauthorized
 - 403 Forbidden
@@ -421,13 +420,26 @@ console.log(resp.data);
 ##### **JSON**
 
 ```json
-none
+{
+  "id": "4jGJC6WBR",
+  "email": "me@mydomain.com",
+  "content": "This is an updated note.",
+  "tags": "Monday Tuesday",
+  "dttm": "2020-10-22T12:14:33.914Z"
+}
 ```
 
 ##### **XML**
 
 ```xml
-none
+<?xml version='1.0'?>
+<note>
+  <id>4jGJC6WBR</id>
+  <email>warren@wyosoft.com</email>
+  <content>This is an updated note.</content>
+  <tags>Monday Tuesday</tags>
+  <dttm>Thu Oct 22 2020 06:15:42 GMT-0600 (Mountain Daylight Time)</dttm>
+</note>
 ```
 
 <!-- tabs:end -->
@@ -435,12 +447,12 @@ none
 ---
 
 <!--------------------------------------
-DELETE A NOTES
+DELETE A NOTE
 --------------------------------------->
 
 ## Delete a Note
 
-Deletes a **Note** using the note's id and the email address in the JWT token passed in the header.
+Deletes a **Note** using the note's id and the email address. The email address in the JWT token is used to identify the user.
 
 ---
 

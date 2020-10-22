@@ -5,11 +5,9 @@ const debug = require('debug')('notes:notes');
 
 const Note  = require('../libs/models').Note;
 const tokens = require("../libs/tokens");
-const addNote  = require('../libs/models').addNote;
-const updateNote  = require('../libs/models').updateNote;
+
 const getNotes  = require('../libs/models').getNotes;
-const deleteNote  = require('../libs/models').deleteNote;
-const verifyNoteOwnership  = require('../libs/models').verifyNoteOwnership;
+const deleteUserNotes  = require('../libs/models').deleteUserNotes;
 
 
 /**
@@ -44,8 +42,26 @@ router.get('/', function(req, res, next) {
     }
     else{
       res.type('application/json');
-      res.send(200, {notes:n});
+      res.send(200, n);
     }
+  }
+  catch(err){
+    debug(err);
+    throw(err);
+  }
+});
+
+
+/**
+ * Delete all notes associated with a single user.
+ */
+router.delete('/', function(req, res, next) {
+  try{
+    // JWY verify and get the email
+    const email = tokens.validateToken(req.get('Authorization'), res);
+    deleteUserNotes(email);
+    res.type('application/json');
+    res.status(204).send()
   }
   catch(err){
     debug(err);

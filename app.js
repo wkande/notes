@@ -37,7 +37,7 @@ app.use('/users', usersRouter);
 app.use('/user', usersRouter);
 app.use('/note', noteRouter);
 app.use('/notes', notesRouter);
-
+app.use('/tag', tagsRouter);
 app.use('/tags', tagsRouter);
 
 
