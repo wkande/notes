@@ -55,23 +55,29 @@ router.post('/', function(req, res, next) {
     // JWY verify and get the email
     const email = tokens.validateToken(req.get('Authorization'), res);
     const content = req.body.content;
-    const tags = req.body.tags;
+    let tags = req.body.tags;
 
+    // Remove multiple spaces between words
+    // cover tabs, newlines, etc, just replace \s\s+ with ' '
+    if(tags){
+      tags = tags.replace(/\s\s+/g, ' ').trim();
+    }
+    
     if(!content){
       res.status(400);
       throw {message:"No content for the note was sent."};
     }
 
-    const note = new Note(email, content, tags);
+    const note = new Note(email, content, tags.trim());
     addNote(note);
 
     if(req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
-      res.send(201, js2xmlparser.parse("note",notes));
+      res.send(201, js2xmlparser.parse("note",note));
     }
     else{
       res.type('application/json');
-      res.send(201, {email:email, note:note});
+      res.send(201, note);
     }
   }
   catch(err){
@@ -87,7 +93,14 @@ router.put('/:id', function(req, res, next) {
     const email = tokens.validateToken(req.get('Authorization'), res);
     const id = req.params['id']
     const content = req.body.content;
-    const tags = req.body.tags;
+    var tags = req.body.tags;
+
+
+    // Remove multiple spaces between words
+    // cover tabs, newlines, etc, just replace \s\s+ with ' '
+    if(tags){
+      tags = tags.replace(/\s\s+/g, ' ').trim();
+    }
 
     if(!content){
       res.status(400);
@@ -100,17 +113,17 @@ router.put('/:id', function(req, res, next) {
       throw {message:"You cannot change that note, please check the id."};
     }
 
-    const note = new Note(email, content, tags);
+    const note = new Note(email, content, tags.trim());
     note.id = id;
     updateNote(note);
 
     if(req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
-      res.send(201, js2xmlparser.parse("note",notes));
+      res.send(201, js2xmlparser.parse("note",note));
     }
     else{
       res.type('application/json');
-      res.send(201, {email:email, note:note});
+      res.send(201, note);
     }
   }
   catch(err){

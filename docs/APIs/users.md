@@ -191,7 +191,7 @@ GET CURRENT USER
 
 ## Get current User
 
-Gets information about the current user as known in the JWT token that is passed in the header.
+Gets information about the current user. The email address in the JWT token is used to identify the user.
 
 <span class="method get">GET</span> /user
 

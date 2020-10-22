@@ -5,6 +5,7 @@ const debug = require('debug')('notes:tags');
 
 const tokens = require("../libs/tokens");
 const getNotes  = require('../libs/models').getNotes;
+const updateTag  = require('../libs/models').updateTag;
 
 
 
@@ -47,5 +48,61 @@ router.get('/', function(req, res, next) {
     throw(err);
   }
 });
+
+
+/**
+ * Updates all instances of a single tag attached to all of a user's notes. 
+ * Useful to correct misspelled tags.
+ */
+router.put('/:tag', function(req, res, next) {
+  try{
+    // JWY verify and get the email
+    const email = tokens.validateToken(req.get('Authorization'), res);
+    const tag = req.params['tag']
+    const tag_new = req.body.tag.trim();
+
+    if(!tag){
+      res.status(400);
+      throw {message:"No value for the tag was sent"};
+    }
+
+    updateTag(email, tag, tag_new);
+
+    if(req.get("accept").toLowerCase() === 'application/xml'){
+      res.type('application/xml');
+      res.send(200, js2xmlparser.parse("tag",{tag_old:tag, tag_new:tag_new}));
+    }
+    else{
+      res.type('application/json');
+      res.send(200, {tag_old:tag, tag_new:tag_new});
+    }
+  }
+  catch(err){
+    debug(err);
+    throw(err);
+  }
+});
+
+
+/**
+ * Deletes a tag from all of a user's notes.
+ */
+router.delete('/:tag', function(req, res, next) {
+  try{
+    // JWY verify and get the email
+    const email = tokens.validateToken(req.get('Authorization'), res);
+    const tag = req.params.tag.trim();
+
+    updateTag(email, tag, "");
+
+    res.type('application/json');
+    res.status(204).send()
+  }
+  catch(err){
+    debug(err);
+    throw(err);
+  }
+});
+
 
 module.exports = router;

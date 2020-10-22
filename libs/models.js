@@ -4,6 +4,7 @@
 const shortid = require('shortid');
 const redis = require('redis');
 const { response } = require('express');
+const e = require('express');
 const debug = require('debug')('notes:models');
 var notes = [];
 
@@ -120,6 +121,38 @@ module.exports.deleteNote = function(id, email){
 
 
 /**
+ * Delete all notes associated with a single user.
+ * @param {*} email 
+ */
+module.exports.deleteUserNotes = function(email){
+  try{
+    debug('----- deleteUserNotes - UPDATE REDIS -----')
+    
+    var newNotesArray = notes.filter(function (el) {
+      return el.email != email;
+    });
+    notes = newNotesArray;
+
+    console.log(notes)
+
+    // Find the notes by email and remove them
+    /*notes.forEach( (note, i)=>{
+      if(note.email === email){
+        notes.splice(i,1); // Delete the note
+      }
+    });*/ 
+    client.set("notes", JSON.stringify(notes), function(err) {
+      if(err) throw err;
+    });
+  }
+  catch(err){
+    debug(err);
+    throw err;
+  }
+}
+
+
+/**
  * Verifyies note ownership by id and email. The email should be extracted from the token
  * @param {*} id 
  * @param {*} email 
@@ -147,6 +180,40 @@ module.exports.verifyNoteOwnership = function(id, email){
  */
 module.exports.getNotes = function(){
   return notes;
+}
+
+
+/**
+ * Updates all instances of a particular tag for all of a user's notes.
+ * Useful for mispelled tags.
+ * @param {*} tag
+ * @param {*} tag_new
+ */
+module.exports.updateTag = function(email, tag, tag_new){
+  try{
+    debug('----- updateTag - UPDATE REDIS -----')
+    // Find the user's notes
+    notes.forEach( (note, i)=>{
+      if(note.email === email){
+        note.tags = note.tags.replace(new RegExp(tag, "g"), tag_new).trim();
+        // Remove multiple spaces between words
+        // cover tabs, newlines, etc, just replace \s\s+ with ' '
+        if(note.tags){
+          note.tags = note.tags.replace(/\s\s+/g, ' ').trim();
+        }
+      }
+    });
+
+    
+
+    client.set("notes", JSON.stringify(notes), function(err) {
+      if(err) throw err;
+    });
+  }
+  catch(err){
+    debug(err);
+    throw err;
+  }
 }
 
 
