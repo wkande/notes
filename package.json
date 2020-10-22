@@ -1,6 +1,6 @@
 {
-  "name": "Notes",
-  "version": "1.0.1",
+  "name": "notes",
+  "version": "1.0.2",
   "private": true,
   "engines": {
     "node": "=12.16.3"

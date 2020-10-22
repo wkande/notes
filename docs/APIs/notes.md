@@ -186,7 +186,8 @@ curl -X GET "https://docs-as-code.herokuapp.com/note/X-CKYqQcj" \
 ```javascript
 const axios = require('axios');
 const options = {
-  "headers": {"Authorization": "Bearer 1234FRTG67", "Accept":"application/json"}
+  "headers": {"Authorization": "Bearer 1234FRTG67", 
+              "Accept":"application/json"}
 };
 
 const resp = await axios.get("https://docs-as-code.herokuapp.com/note/X-CKYqQcj", {}, options)
@@ -278,6 +279,7 @@ Creates a new **Note** using the email address in the JWT token passed in the he
 curl -d "content=Now is the time to get to the store.&tags=saturday monday" \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Accept:application/json" \
+-H "Authorization: Bearer 1234FRTG67" \
 -X POST https://docs-as-code.herokuapp.com/note | json_pp
 ```
 
@@ -286,7 +288,9 @@ curl -d "content=Now is the time to get to the store.&tags=saturday monday" \
 ```javascript
 const axios = require('axios');
 const options = {
-  "headers": {"Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"}
+  "headers": {"Accept": "application/json",
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Authorization": "Bearer 1234FRTG67"}
 };
 
 const resp = await axios.post("https://docs-as-code.herokuapp.com/note", 
@@ -382,6 +386,7 @@ Updates the content and/or the tags of a **Note** using the note's id and the em
 curl -d "content=Check on loan with the bank.&tags=tuesday thursday" \
 -H "Content-Type: application/x-www-form-urlencoded" \
 -H "Accept:application/json" \
+-H "Authorization: Bearer 1234FRTG67"
 -X PUT https://docs-as-code.herokuapp.com/note/X-CKYqQcj | json_pp
 ```
 
@@ -390,7 +395,9 @@ curl -d "content=Check on loan with the bank.&tags=tuesday thursday" \
 ```javascript
 const axios = require('axios');
 const options = {
-  "headers": {"Accept": "application/json", "Content-Type": "application/x-www-form-urlencoded"}
+  "headers": {"Accept": "application/json", 
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Authorization": "Bearer 1234FRTG67"}
 };
 
 const resp = await axios.put("https://docs-as-code.herokuapp.com/note/X-CKYqQcj", 
@@ -462,11 +469,11 @@ Deletes a **Note** using the note's id and the email address. The email address 
 
 **Parameters**
 
-| Name         | Type    | In     | Description |
-| :---         | :---    | :---   | :--- |
-| Accept       | string  | header | application/json or application/xml |
-| Authorization  | string  | header | ^ Bearer JWT-token |
-| id           | string  | path   | ^ id of the note |
+| Name          | Type    | In     | Description |
+| :---          | :---    | :---   | :--- |
+| Accept        | string  | header | application/json or application/xml |
+| Authorization | string  | header | ^ Bearer JWT-token |
+| id            | string  | path   | ^ id of the note |
 
 ^ required
 
@@ -480,6 +487,7 @@ Deletes a **Note** using the note's id and the email address. The email address 
 
 ```bash
 curl -H "Accept:application/json" \
+-H "Authorization: Bearer 1234FRTG67" \
 -X DELETE https://docs-as-code.herokuapp.com/note/X-CKYqQcj | json_pp
 ```
 
@@ -488,10 +496,97 @@ curl -H "Accept:application/json" \
 ```javascript
 const axios = require('axios');
 const options = {
-  "headers": {"Accept": "application/json"}
+  "headers": {"Accept": "application/json",
+              "Authorization": "Bearer 1234FRTG67"}
 };
 
 const resp = await axios.delete("https://docs-as-code.herokuapp.com/note/X-CKYqQcj", options)
+console.log(resp.data);
+```
+<!-- tabs:end -->
+
+---
+
+### Response
+
+<!-- tabs:start -->
+
+##### **Status**
+
+```text
+- 204 No Content
+- 400 Bad Request
+- 401 Unauthorized
+- 403 Forbidden
+- 429 To Many Requests
+- 431 Request Header Fields Too Large
+- 500 Internal server error
+```
+
+##### **JSON**
+
+```json
+none
+```
+
+##### **XML**
+
+```xml
+none
+```
+
+<!-- tabs:end -->
+
+---
+
+
+<!--------------------------------------
+DELETE USER'S NOTEs
+--------------------------------------->
+
+## Delete user's Notes
+
+Deletes all **Note** of a particular user. The email address in the JWT token is used to identify the user.
+
+---
+
+<span class="method delete">DELETE</span> /notes
+
+---
+
+**Parameters**
+
+| Name          | Type    | In     | Description |
+| :---           | :---    | :---   | :--- |
+| Accept         | string  | header | application/json or application/xml |
+| Authorization  | string  | header | ^ Bearer JWT-token |
+
+^ required
+
+---
+
+### Examples
+
+<!-- tabs:start -->
+
+##### **CURL**
+
+```bash
+curl -H "Accept:application/json" \
+-H "Authorization: Bearer 1234FRTG67" \
+-X DELETE https://docs-as-code.herokuapp.com/notes | json_pp
+```
+
+##### **Javascript**
+
+```javascript
+const axios = require('axios');
+const options = {
+  "headers": {"Accept": "application/json",
+              "Authorization": "Bearer 1234FRTG67"}
+};
+
+const resp = await axios.delete("https://docs-as-code.herokuapp.com/notes", options)
 console.log(resp.data);
 ```
 <!-- tabs:end -->
