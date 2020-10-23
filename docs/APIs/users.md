@@ -14,8 +14,6 @@ Collect the user's email address and send it to the [POST /user/code](#Get-A-Tok
 
 Most email gateways will accept an email address and enter it into a queue to be delivered in the future. This does not guarantee delivery. This endpoint will return a status=201 once the gateway "accepts" the email address for delivery, though it might fail in the future.
 
----
-
 <span class="method post">POST</span> /user/code
 
 ---
@@ -30,7 +28,7 @@ Most email gateways will accept an email address and enter it into a queue to be
 
 ^ required
 
----
+
 
 ### Examples
 
@@ -58,7 +56,7 @@ console.log(resp.data);
 ```
 <!-- tabs:end -->
 
----
+
 
 ### Response
 
@@ -80,7 +78,7 @@ console.log(resp.data);
 {
   "user": {
     "email": "me@mydomain.com",
-    "code": "A code was sent to the email address."
+    "message": "A code was sent to the email address."
   }
 }
 ```
@@ -91,7 +89,7 @@ console.log(resp.data);
 <?xml version='1.0'?>
 <user>
   <email>warren@wyosoft.com</email>
-  <code>A code was sent to the email address.</code>
+  <message>A code was sent to the email address.</message>
 </user>
 ```
 
@@ -121,8 +119,6 @@ Send the code received from [POST /user/code](#Create-A-Code) to **GET /user/tok
 
 ^ required
 
----
-
 ### Examples
 
 <!-- tabs:start -->
@@ -141,7 +137,10 @@ const options = {
   "headers": {"Accept": "application/json"}
 };
 
-const resp = await axios.get("https://docs-as-code.herokuapp.com/user/token", {"email":"me@mydomain.com"}, options)
+const resp = await axios.get(
+  "https://docs-as-code.herokuapp.com/user/token?email=me@mydomain.com&code=123456", 
+  options
+)
 console.log(resp.data);
 ```
 
@@ -164,10 +163,7 @@ console.log(resp.data);
 
 ```json
 {
-  "user": {
-    "email": "me@mydomain.com",
-    "code": "A code was sent to the email address."
-  }
+  "token": "eyJhbGciOiJIUzI1NiJ9..."
 }
 ```
 
@@ -175,10 +171,7 @@ console.log(resp.data);
 
 ```xml
 <?xml version='1.0'?>
-<user>
-  <email>warren@wyosoft.com</email>
-  <code>A code was sent to the email address.</code>
-</user>
+<token>eyJhbGciOiJIUzI1NiJ9...</token>
 ```
 
 <!-- tabs:end -->
@@ -205,8 +198,6 @@ Gets information about the current user. The email address in the JWT token is u
 | Authorization | string  | header  | ^ Bearer JWT-token |
 
 ^ required
-
----
 
 ### Examples
 
@@ -271,5 +262,3 @@ console.log(resp.data);
 ```
 
 <!-- tabs:end -->
-
----
