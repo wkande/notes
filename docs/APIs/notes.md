@@ -31,8 +31,6 @@ There is an optional search to filter the notes by content and tags. Optional pa
 - **/notes?tags=Saturday%20Tuesday** (notes with Saturday or Tuesday in the tags)
 - **/notes?content=Madison&skip=0&limit=25** (first 25 notes with Madison in the content)
 
----
-
 <span class="method get">GET</span> /notes
 
 ---
@@ -49,8 +47,6 @@ There is an optional search to filter the notes by content and tags. Optional pa
 | limit          | integer | query  | max number of rows |
 
 ^ required
-
----
 
 ### Examples
 
@@ -79,8 +75,6 @@ console.log(resp.data);
 ```
 <!-- tabs:end -->
 
----
-
 ### Response
 
 <!-- tabs:start -->
@@ -104,14 +98,14 @@ console.log(resp.data);
     "id": "-UB_Ja5Qq",
     "email": "me@mydomain.com",
     "content": "Sent a new token.",
-    "tags": "token",
+    "tags": "Monday",
     "dttm": "2020-10-17T13:52:22.027Z"
   },
   {
     "id": "AU7_Ja5Us",
     "email": "me@mydomain.com",
     "content": "My first note.",
-    "tags": "today",
+    "tags": "Monday",
     "dttm": "2020-10-16T11:12:11.047Z"
   }
 ]
@@ -127,14 +121,14 @@ console.log(resp.data);
     <id>-UB_Ja5Qq</id>
     <email>me@mydomain.com</email>
     <content>Sent a new token.</content>
-    <tags>token</tags>
+    <tags>Monday</tags>
     <dttm>2020-10-17T13:52:22.027Z</dttm>
   </note>
   <note>
     <id>-AU7_Ja5Us</id>
     <email>me@mydomain.com</email>
     <content>My first note.</content>
-    <tags>today</tags>
+    <tags>Monday</tags>
     <dttm>2020-10-16T11:12:11.047Z</dttm>
   </note>
 </notes>
@@ -217,7 +211,7 @@ console.log(resp.data);
   "id": "X-CKYqQcj",
   "email": "me@mydomain.com",
   "content": "Sent a new token.",
-  "tags": "token",
+  "tags": "Monday",
   "dttm": "2020-10-17T13:52:22.027Z"
 }
 ```
@@ -230,7 +224,7 @@ console.log(resp.data);
   <id>X-CKYqQcj</id>
   <email>me@mydomain.com</email>
   <content>Sent a new token.</content>
-  <tags>token</tags>
+  <tags>Monday</tags>
   <dttm>2020-10-17T13:52:22.027Z</dttm>
 </note>
 ```
@@ -247,8 +241,6 @@ CREATE A NOTE
 
 Creates a new **Note** using the email address in the JWT token passed in the header.
 
----
-
 <span class="method post">POST</span> /note
 
 ---
@@ -264,8 +256,6 @@ Creates a new **Note** using the email address in the JWT token passed in the he
 | tags         | string  | body   | one or many words |
 
 ^ required
-
----
 
 ### Examples
 
@@ -296,8 +286,6 @@ const resp = await axios.post("https://docs-as-code.herokuapp.com/note",
 console.log(resp.data);
 ```
 <!-- tabs:end -->
-
----
 
 ### Response
 
@@ -351,8 +339,6 @@ UPDATE A NOTE
 
 Updates the content and/or the tags of a **Note** using the note's id and the email address. The email address in the JWT token is used to identify the user.
 
----
-
 <span class="method put">PUT</span> /note/:id
 
 ---
@@ -369,8 +355,6 @@ Updates the content and/or the tags of a **Note** using the note's id and the em
 | tags         | string  | body   | one or many words |
 
 ^ required
-
----
 
 ### Examples
 
@@ -401,8 +385,6 @@ const resp = await axios.put("https://docs-as-code.herokuapp.com/note/X-CKYqQcj"
 console.log(resp.data);
 ```
 <!-- tabs:end -->
-
----
 
 ### Response
 
@@ -457,8 +439,6 @@ DELETE A NOTE
 
 Deletes a **Note** using the note's id and the email address. The email address in the JWT token is used to identify the user.
 
----
-
 <span class="method delete">DELETE</span> /note/:id
 
 ---
@@ -472,8 +452,6 @@ Deletes a **Note** using the note's id and the email address. The email address 
 | id            | string  | path   | ^ id of the note |
 
 ^ required
-
----
 
 ### Examples
 
@@ -500,8 +478,6 @@ const resp = await axios.delete("https://docs-as-code.herokuapp.com/note/X-CKYqQ
 console.log(resp.data);
 ```
 <!-- tabs:end -->
-
----
 
 ### Response
 
@@ -543,8 +519,6 @@ DELETE USER'S NOTEs
 
 Deletes all **Note** of a particular user. The email address in the JWT token is used to identify the user.
 
----
-
 <span class="method delete">DELETE</span> /notes
 
 ---
@@ -557,8 +531,6 @@ Deletes all **Note** of a particular user. The email address in the JWT token is
 | Authorization  | string  | header | ^ Bearer JWT-token |
 
 ^ required
-
----
 
 ### Examples
 
@@ -585,8 +557,6 @@ const resp = await axios.delete("https://docs-as-code.herokuapp.com/notes", opti
 console.log(resp.data);
 ```
 <!-- tabs:end -->
-
----
 
 ### Response
 
@@ -617,5 +587,3 @@ none
 ```
 
 <!-- tabs:end -->
-
----
