@@ -94,7 +94,7 @@ router.post('/code', function(req, res, next) {
     });
 
  
-    const user = {email:email, code:'A code was sent to the email address.', ip:ip};
+    const user = {email:email, message:'A code was sent to the email address.', ip:ip};
     codes.push({email:email, code:code});
     debug('codes array', codes);
 
@@ -159,7 +159,7 @@ router.get('/token', function(req, res, next) {
     }
     else{
       res.type('application/json');
-      res.status(200).send({token,token});
+      res.status(200).send({token:token});
     }
   }
   catch(err){
