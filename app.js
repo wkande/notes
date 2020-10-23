@@ -24,8 +24,6 @@ const debug = require('debug')('notes:app');
 var app = express();
 
 
-
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -51,8 +49,10 @@ function exitHandler(options, exitCode) {
   if (options.exit) process.exit();
 }
 
+
 // do something when app is closing
 process.on('exit', exitHandler.bind(null, {cleanup:true}));
+
 
 // catches ctrl+c event
 process.on('SIGINT', exitHandler.bind(null, {exit:true}));
@@ -122,5 +122,6 @@ app.use(function(err, req, res, next) {
       res.status(500).send({message:"Issue at Global Error handler.", error:err.toString(), ip:ip});
   }
 });
+
 
 module.exports = app;
