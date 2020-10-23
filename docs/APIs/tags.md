@@ -22,8 +22,6 @@ GET USER'S TAGS
 
 Gets a list of unique **Tags** used within a user's notes. The email address in the JWT token is used to identify the user.
 
----
-
 <span class="method get">GET</span> /tags
 
 ---
@@ -36,8 +34,6 @@ Gets a list of unique **Tags** used within a user's notes. The email address in 
 | Authorization  | string  | header | ^ Bearer JWT-token |
 
 ^ required
-
----
 
 ### Examples
 
@@ -64,8 +60,6 @@ const resp = await axios.get("https://docs-as-code.herokuapp.com/tags", options)
 console.log(resp.data);
 ```
 <!-- tabs:end -->
-
----
 
 ### Response
 
@@ -111,9 +105,6 @@ console.log(resp.data);
 
 <!-- tabs:end -->
 
-
----
-
 <!--------------------------------------
 UPDATE A TAG
 --------------------------------------->
@@ -123,8 +114,6 @@ UPDATE A TAG
 ## Update a Tag
 
 Updates a particular **Tag** within all of the user's notes. Useful to correct misspelled tags. The old tag is passed in the path and the new tag spelling is passed in the body. The email address in the JWT token is used to identify the user.
-
----
 
 <span class="method put">PUT</span> /tag/:tag
 
@@ -140,8 +129,6 @@ Updates a particular **Tag** within all of the user's notes. Useful to correct m
 | tag           | string  | path   | ^ new spelling of the tag |
 
 ^ required
-
----
 
 ### Examples
 
@@ -172,8 +159,6 @@ const resp = await axios.put("https://docs-as-code.herokuapp.com/tag/sartuday",
 console.log(resp.data);
 ```
 <!-- tabs:end -->
-
----
 
 ### Response
 
@@ -208,17 +193,15 @@ none
 
 <!-- tabs:end -->
 
----
-
 <!--------------------------------------
 DELETE A TAG
 --------------------------------------->
 
+---
+
 ## Delete a Tag
 
 Deletes a particular **Tag**  from all of the user's notes. The email address in the JWT token is used to identify the user.
-
----
 
 <span class="method delete">DELETE</span> /tag/:tag
 
@@ -233,8 +216,6 @@ Deletes a particular **Tag**  from all of the user's notes. The email address in
 | tag           | string  | path   | ^ a tag used in user's notes |
 
 ^ required
-
----
 
 ### Examples
 
@@ -261,8 +242,6 @@ const resp = await axios.delete("https://docs-as-code.herokuapp.com/tag/tuesday"
 console.log(resp.data);
 ```
 <!-- tabs:end -->
-
----
 
 ### Response
 
@@ -293,5 +272,3 @@ none
 ```
 
 <!-- tabs:end -->
-
----
