@@ -113,7 +113,7 @@ UPDATE A TAG
 
 ## Update a Tag
 
-Updates a particular **Tag** within all of the user's notes. Useful to correct misspelled tags. The old tag is passed in the path and the new tag spelling is passed in the body. The email address in the JWT token is used to identify the user.
+Updates a particular **Tag** within all notes of the current user. Useful to correct misspelled tags. The old tag is passed in the path and the new tag spelling is passed in the body. The email address in the JWT token is used to identify the user.
 
 <span class="method put">PUT</span> /tag/:tag
 
@@ -201,7 +201,7 @@ DELETE A TAG
 
 ## Delete a Tag
 
-Deletes a particular **Tag**  from all of the user's notes. The email address in the JWT token is used to identify the user.
+Deletes a particular **Tag** from all notes of the current user. The email address in the JWT token is used to identify the user.
 
 <span class="method delete">DELETE</span> /tag/:tag
 
