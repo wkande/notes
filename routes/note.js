@@ -10,7 +10,7 @@ const updateNote  = require('../libs/models').updateNote;
 const getNotes  = require('../libs/models').getNotes;
 const deleteNote  = require('../libs/models').deleteNote;
 const verifyNoteOwnership  = require('../libs/models').verifyNoteOwnership;
-
+const removeNoteTags = require('../libs/models').removeNoteTags;
 
 /**
  * GET /note
@@ -133,6 +133,37 @@ router.put('/:id', function(req, res, next) {
 });
 
 
+/**
+ * Removes all tags from a single note.
+ */
+router.patch('/:id/tags', function(req, res, next) {
+  try{
+    // JWT verify and get the email
+    const email = tokens.validateToken(req.get('Authorization'), res);
+    const id = req.params.id;
+
+    const note = removeNoteTags(id, email);
+
+    if(req.get("accept").toLowerCase() === 'application/xml'){
+      res.type('application/xml');
+      res.send(201, js2xmlparser.parse("note",note));
+    }
+    else{
+      res.type('application/json');
+      res.send(201, note);
+    }
+  }
+  catch(err){
+    if(err.status) res.status(err.status);
+    debug(err);
+    throw(err);
+  }
+});
+
+
+/**
+ * Deletes a note.
+ */
 router.delete('/:id', function(req, res, next) {
   try{
     // JWY verify and get the email

@@ -2,7 +2,7 @@
 
 These instructions are for the deployment of the Node.js backend for Notes. See the deploy.md file in the notes-docs-vX.X repo to deploy the docs.
 
-1. Verify version # in package.json.
+1. Verify version # in package.json and package.lock.json.
 
 1. GitHub merge all Branches to main.
 

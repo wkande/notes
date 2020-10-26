@@ -121,6 +121,40 @@ module.exports.deleteNote = function(id, email){
 
 
 /**
+ * Deletes all tags from a note
+ * @param {*} id 
+ * @param {*} email 
+ */
+module.exports.removeNoteTags = function(id, email){
+  try{
+    debug('----- removeNoteTags - UPDATE REDIS -----')
+    // Find the note and remove its tags
+    let note;
+    notes.forEach( (element, i)=>{
+      if(element.email === email && element.id === id){
+        element.tags = null;
+        note = element;
+        client.set("notes", JSON.stringify(notes), function(err) {
+          if(err) throw err;
+        });
+      }
+    }); 
+
+    if(note){
+      return note;
+    }
+    else {
+      throw {status:400, message:"Note ID not found."};
+    }
+  }
+  catch(err){
+    debug(err);
+    throw err;
+  }
+}
+
+
+/**
  * Delete all notes associated with a single user.
  * @param {*} email 
  */
