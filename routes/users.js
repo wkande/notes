@@ -59,6 +59,10 @@ router.get('/', function(req, res, next) {
  * Email-Code-Token mechanism. The email/code must then be passed to GET/token to 
  * get a JWT token which is required to call other endpoints.
  * 
+ * @Content-Type string
+ * @Accept string
+ * @email string
+ * 
  * @todo Change sendMail to receive a promise and embed the response in the callback.
  */
 router.post('/code', function(req, res, next) {
