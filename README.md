@@ -9,9 +9,9 @@ The Node.js backend, Docsify documentation and Insomnia API Definitions file wer
 
 ## API Reference Guide
 
-The **API Reference Guide** for Notes is a set of markdown files rendered by Docisfy. You can find the source in this repo in the **docs** folder.
+The **API Reference Guide** for Notes is a set of markdown files rendered by Docisfy. You can find the source in the repo in the [notes-docs-v1.1](https://github.com/wkande/notes-docs-v1.1) repo.
 
-Visit the [API Reference Guide](https://wkande.github.io/notes/) hosted by the GitHub Pages site attached to this GitHub Repo.
+Visit the [API Reference Guide](https://wkande.github.io/notes-docs-v1.1/) hosted by the GitHub Pages site attached to this GitHub Repo.
 
 ## Heroku
 
