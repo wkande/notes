@@ -17,16 +17,20 @@ router.get('/', function(req, res, next) {
   try{
     // JWY verify and get the email
     const email = tokens.validateToken(req.get('Authorization'), res);
-    debug('TAGS', email);
+    debug('email', email);
 
     // Get distinct tags
     let n = [];
     getNotes().forEach((element) => {
-      let tags = element.tags.split(' ');
-      for (var i=0; i<tags.length; i++){
-        tags[i].trim();
-        if(tags[i].length > 0) n.push(tags[i]);
+      let tags;
+      if(element.tags){ // tags could be null
+        tags = element.tags.split(' '); 
+        for (var i=0; i<tags.length; i++){
+          tags[i].trim();
+          if(tags[i].length > 0) n.push(tags[i]);
+        }
       }
+      
     });
     const distinct = (value, index, self) => {
       return self.indexOf(value) === index;
@@ -36,11 +40,11 @@ router.get('/', function(req, res, next) {
 
     if(req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
-      res.send(200, js2xmlparser.parse("tags",unique));
+      res.status(200).sendjs2xmlparser.parse("tags",unique);
     }
     else{
       res.type('application/json');
-      res.send(200, unique);
+      res.status(200).send(unique);
     }
   }
   catch(err){
@@ -58,23 +62,26 @@ router.put('/:tag', function(req, res, next) {
   try{
     // JWY verify and get the email
     const email = tokens.validateToken(req.get('Authorization'), res);
-    const tag = req.params['tag']
+    const tag = req.params['tag'];
     const tag_new = req.body.tag.trim();
+
+    console.log('tag_old', req.params['tag'])
+    console.log('tag_new', req.body.tag)
 
     if(!tag){
       res.status(400);
-      throw {message:"No value for the tag was sent"};
+      throw {message:"A value for the (new) tag was not sent."};
     }
 
     updateTag(email, tag, tag_new);
 
     if(req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
-      res.send(200, js2xmlparser.parse("tag",{tag_old:tag, tag_new:tag_new}));
+      res.status(200).send(js2xmlparser.parse("tag",{tag_old:tag, tag_new:tag_new}));
     }
     else{
       res.type('application/json');
-      res.send(200, {tag_old:tag, tag_new:tag_new});
+      res.status(200).send({tag_old:tag, tag_new:tag_new});
     }
   }
   catch(err){

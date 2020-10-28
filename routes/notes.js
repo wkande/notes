@@ -61,7 +61,7 @@ router.delete('/', function(req, res, next) {
     const email = tokens.validateToken(req.get('Authorization'), res);
     deleteUserNotes(email);
     res.type('application/json');
-    res.status(204).send()
+    res.status(204).send();
   }
   catch(err){
     debug(err);
