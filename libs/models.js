@@ -167,8 +167,6 @@ module.exports.deleteUserNotes = function(email){
     });
     notes = newNotesArray;
 
-    console.log(notes)
-
     // Find the notes by email and remove them
     /*notes.forEach( (note, i)=>{
       if(note.email === email){
@@ -228,7 +226,10 @@ module.exports.updateTag = function(email, tag, tag_new){
     debug('----- updateTag - UPDATE REDIS -----')
     // Find the user's notes
     notes.forEach( (note, i)=>{
-      if(note.email === email){
+      console.dir(note.tag)
+      console.dir(email)
+      if(note.email === email && note.tags){ // tag could be null
+        console.dir(note)
         note.tags = note.tags.replace(new RegExp(tag, "g"), tag_new).trim();
         // Remove multiple spaces between words
         // cover tabs, newlines, etc, just replace \s\s+ with ' '
@@ -237,8 +238,6 @@ module.exports.updateTag = function(email, tag, tag_new){
         }
       }
     });
-
-    
 
     client.set("notes", JSON.stringify(notes), function(err) {
       if(err) throw err;

@@ -21,7 +21,9 @@ var noteRouter = require('./routes/note');
 var tagsRouter = require('./routes/tags');
 const closeRedis  = require('./libs/models').closeRedis;
 const debug = require('debug')('notes:app');
-var app = express();
+const app = express();
+const cors = require('cors')
+app.use(cors());
 
 
 app.use(logger('dev'));

@@ -146,11 +146,11 @@ router.patch('/:id/tags', function(req, res, next) {
 
     if(req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
-      res.send(201, js2xmlparser.parse("note",note));
+      res.send(200, js2xmlparser.parse("note",note));
     }
     else{
       res.type('application/json');
-      res.send(201, note);
+      res.send(200, note);
     }
   }
   catch(err){
@@ -173,12 +173,12 @@ router.delete('/:id', function(req, res, next) {
     // Does the user own this note?
     if(!verifyNoteOwnership(id, email)){
       res.status(403);
-      throw {message:"You cannot change that note, please check the id."};
+      throw {message:"You cannot delete that note or it does not exist, please check the id."};
     }
     deleteNote(id, email);
 
     res.type('application/json');
-    res.status(204).send()
+    res.status(204).send();
   }
   catch(err){
     debug(err);
