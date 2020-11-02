@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
-  console.log('\n------------------------------\nIncoming =>  PATH:', req.path)
+  console.log('\n------------------------------\napp.js =>  PATH:', req.path);
   next()
 })
 
