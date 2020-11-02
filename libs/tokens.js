@@ -8,6 +8,8 @@ module.exports.getToken = function(email){
 
 module.exports.validateToken = function(auth){
   try{
+    console.log('validateToken => token:', token);
+    console.log('validateToken => jwt.verify:', jwt.verify(token, process.env.JWT_SECRET));
     // auth param has Bearer attached
     const token = auth.split(' ')[1];
     // The decoded token is just the email
