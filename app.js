@@ -12,6 +12,7 @@ console.info('/*-------------------------*/\n');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 var logger = require('morgan');
 const js2xmlparser = require("js2xmlparser");
 var indexRouter = require('./routes/index');
@@ -25,6 +26,13 @@ const app = express();
 const cors = require('cors')
 app.use(cors());
 
+/**
+ * Set up body parsers for the request body types expected.
+ * parse application/json
+ * parse application/x-www-form-urlencoded
+ */
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(logger('dev'));
 app.use(express.json());
