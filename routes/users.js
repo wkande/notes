@@ -73,7 +73,8 @@ router.post('/code', function(req, res, next) {
      req.connection.remoteAddress || 
      req.socket.remoteAddress ||
      (req.connection.socket ? req.connection.socket.remoteAddress : null);
-    console.log('req/IP', req, ip); // Do not remove this line
+    console.log('req.body/IP', req.body, ip); // Do not remove this line
+    console.log('content-type', req.get('content-type')); //
 
     // Check content-type
     if(req.get('content-type') !== 'application/x-www-form-urlencoded'){
