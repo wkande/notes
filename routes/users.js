@@ -2,9 +2,7 @@ var express = require('express');
 var router = express.Router();
 const js2xmlparser = require("js2xmlparser");
 const debug = require('debug')('notes:users');
-//const { token } = require('morgan');
 var nodemailer = require('nodemailer');
-//const notes  = require('../libs/models').notes;
 const Note  = require('../libs/models').Note;
 const tokens = require("../libs/tokens");
 const addNote  = require('../libs/models').addNote;
@@ -99,7 +97,7 @@ router.post('/code', function(req, res, next) {
     });
 
  
-    const user = {email:email, message:'A code was sent to the email address.', ip:ip};
+    const codeObj = {email:email, message:'A code was sent to the email address.', ip:ip};
     codes.push({email:email, code:code});
     debug('codes array', codes);
 
@@ -110,11 +108,11 @@ router.post('/code', function(req, res, next) {
     // Send response
     if (req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
-      res.status(201).send(js2xmlparser.parse("user",user));
+      res.status(201).send(js2xmlparser.parse("code",codeObj));
     }
     else{
       res.type('application/json');
-      res.status(201).send( {user:user});
+      res.status(201).send( {code:codeObj});
     }
   }
   catch(err){
