@@ -26,6 +26,24 @@ const app = express();
 const cors = require('cors')
 app.use(cors());
 
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+/**
+ * OpenAPI validation
+ */
+/*const OpenApiValidator = require('express-openapi-validator');
+app.use(
+  OpenApiValidator.middleware({
+    apiSpec: './redoc/notes.yaml',
+    validateRequests: true, // (default)
+    validateResponses: true, // false by default
+  }),
+);*/
+
 /**
  * Set up body parsers for the request body types expected.
  * parse application/json
@@ -34,17 +52,14 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(function (req, res, next) {
-  console.log('\n------------------------------\napp.js =>  PATH:', req.path);
+  console.log('\n------------------------------\n=> app.js =>  PATH:', req.path);
   next()
 })
 
+/**
+ * Routes
+ */
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/user', usersRouter);
@@ -52,7 +67,6 @@ app.use('/note', noteRouter);
 app.use('/notes', notesRouter);
 app.use('/tag', tagsRouter);
 app.use('/tags', tagsRouter);
-
 
 /*------------------- Ending Node.js --------------------*/
 function exitHandler(options, exitCode) {
@@ -92,7 +106,6 @@ app.use(function(err, req, res, next) {
       (req.connection.socket ? req.connection.socket.remoteAddress : null);
 
     console.group('\n--> GLOBAL ERROR HANDLER <--');
-
     console.error('res.statusCode', res.statusCode);
     console.error('ip', ip);
 
@@ -111,7 +124,7 @@ app.use(function(err, req, res, next) {
         }
         else{
           res.type('application/json');
-          res.status(res.statusCode).send(e);
+          res.status(res.statusCode).send({error:e});
         }
         console.error(e);
     }
@@ -125,7 +138,7 @@ app.use(function(err, req, res, next) {
         }
         else{
           res.type('application/json');
-          res.status(res.statusCode).send(err);
+          res.status(res.statusCode).send({error:err});
         }
         console.error(err);
     }
