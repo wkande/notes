@@ -144,9 +144,9 @@ router.get('/token', function(req, res, next) {
       throw {message:"Invalid code"};
     }
 
-    let token = null;
+    let tokenObj = null;
     if(emailIsValid(email)){
-      token = tokens.getToken(req.query.email)
+      tokenObj = {value:tokens.getToken(req.query.email)};
     }
     else{
       res.status(400);
@@ -154,15 +154,15 @@ router.get('/token', function(req, res, next) {
     }
 
     // Ready to send the token. Add a note about it.
-    addNote(new Note(email, 'Sent a new token.', 'token'));
+    addNote(new Note(email, 'We sent a new token to you.', 'token'));
 
     if (req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
-      res.status(200).send(js2xmlparser.parse("token",token));
+      res.status(200).send(js2xmlparser.parse("token",tokenObj));
     }
     else{
       res.type('application/json');
-      res.status(200).send({token:token});
+      res.status(200).send({token:tokenObj});
     }
   }
   catch(err){
