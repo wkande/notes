@@ -44,7 +44,7 @@ router.get('/', function(req, res, next) {
     }
     else{
       res.type('application/json');
-      res.status(200).send(unique);
+      res.status(200).send({tags:unique});
     }
   }
   catch(err){

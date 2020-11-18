@@ -38,11 +38,11 @@ router.get('/', function(req, res, next) {
 
     if(req.get("accept").toLowerCase() === 'application/xml'){
       res.type('application/xml');
-      res.send(200, js2xmlparser.parse("notes",{note:n}));
+      res.status(200).send(js2xmlparser.parse("notes",{note:n}));
     }
     else{
       res.type('application/json');
-      res.send(200, n);
+      res.status(200).send(n);
     }
   }
   catch(err){
