@@ -14,21 +14,21 @@ var notes = [];
  * notes are stored.
  */
 // STARTUP
-    debug('Running startup script');
-    // Connect to RedisLabs
-    const client = redis.createClient(
-      process.env.REDIS_PORT,
-      process.env.REDIS_HOST
-    );
-    client.auth('xjl1MH8AgbS7qPGVkDEfRmpaogdnM8RN');
+debug('Running startup script');
+// Connect to RedisLabs
+const client = redis.createClient(
+  process.env.REDIS_PORT,
+  process.env.REDIS_HOST
+);
+client.auth(process.env.REDIS_KEY);
 
-    client.get("notes", function(err, obj) {
-      // arr is null when the key is missing
-      if(err) console.log('err', err);
-      notes = JSON.parse(obj);
-      debug('Notes array length:', notes.length);
-      debug('Connection to RedisLabs OK');
-    });
+client.get("notes", function(err, obj) {
+  // arr is null when the key is missing
+  if(err) console.log('err', err);
+  notes = JSON.parse(obj);
+  debug('Notes array length:', notes.length);
+  debug('Connection to RedisLabs OK');
+});
 // END STARTUP
 
 
